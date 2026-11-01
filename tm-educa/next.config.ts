@@ -11,14 +11,6 @@ const nextConfig: NextConfig = {
     // `/imagens/**` e proibimos query strings, que não são necessárias.
     localPatterns: [{ pathname: "/imagens/**", search: "" }],
   },
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   async redirects() {
     return [
       {
