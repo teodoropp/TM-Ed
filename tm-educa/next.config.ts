@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     // `/imagens/**` e proibimos query strings, que não são necessárias.
     localPatterns: [{ pathname: "/imagens/**", search: "" }],
   },
+  // Redução do paralelismo para evitar esgotamento de threads/PIDs em contentores de build (os error 11)
+  experimental: {
+    cpus: 1,
+    workerThreads: false,
+  },
   async redirects() {
     return [
       {
