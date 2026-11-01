@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <title>Preview Oficial do Logótipo & Ícone — TM-Educa</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #F8FAFC;
+      color: #0A192F;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    p {
+      color: #64748B;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(10, 25, 47, 0.04);
+    }
+    .card-dark {
+      background: #0A192F;
+      border: 1px solid #1E293B;
+      color: #FFFFFF;
+    }
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94A3B8;
+      margin-top: 16px;
+    }
+    .label-pink {
+      color: #FF2D75;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TM-Educa — Identidade Visual Oficial</h1>
+    <p>Fonte Segoe UI Normal (Sem Bold), margem ampla para não cortar o "a", livro contínuo e elegante, letras T e M centralizadas, pequenas e retas.</p>
+
+    <div class="grid">
+      <!-- Ícone Isolado Fundo Claro -->
+      <div class="card">
+        <img src="/logo/icone-tmeduca.svg" alt="Ícone TM-Educa" style="width: 130px; height: 130px;" />
+        <span class="label">Ícone Oficial (Fundo Claro)</span>
+      </div>
+
+      <!-- Ícone Isolado Fundo Escuro -->
+      <div class="card card-dark">
+        <img src="/logo/icone-tmeduca.svg" alt="Ícone TM-Educa" style="width: 130px; height: 130px;" />
+        <span class="label label-pink">Ícone Oficial (Fundo Escuro)</span>
+      </div>
+    </div>
+
+    <!-- Logótipo Horizontal Completo Claro -->
+    <div class="card" style="margin-bottom: 24px;">
+      <img src="/logo/logo-tmeduca.svg" alt="Logo TM-Educa Horizontal" style="max-width: 520px;" />
+      <span class="label">Logótipo Horizontal — Segoe UI Normal</span>
+    </div>
+
+    <!-- Logótipo Horizontal Dark Mode -->
+    <div class="card card-dark">
+      <img src="/logo/logo-tmeduca-dark.svg" alt="Logo TM-Educa Dark Mode" style="max-width: 520px;" />
+      <span class="label label-pink">Logótipo Horizontal Dark Mode</span>
+    </div>
+  </div>
+</body>
+</html>

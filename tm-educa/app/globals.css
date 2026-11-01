@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #060a12;
+  --foreground: #f8fafc;
+  
+  /* Cores de Identidade Oficial TM-Educa */
+  --brand-navy: #07182E;
+  --brand-navy-light: #102a45;
+  --brand-pink: #ff2d75;
+  --brand-pink-hover: #e11d48;
+  --brand-pink-subtle: #fff1f5;
+  --brand-white: #ffffff;
+
+  --primary: #ff2d75;
+  --primary-foreground: #ffffff;
+  --secondary: #07182E;
+  --secondary-foreground: #ffffff;
+  
+  --card: #07182E;
+  --card-foreground: #f8fafc;
+  --border: #1a2f4c;
+  --ring: #ff2d75;
+  color-scheme: dark;
+}
+
+html.dark,
+.dark {
+  --background: #060a12;
+  --foreground: #f8fafc;
+  
+  --card: #07182E;
+  --card-foreground: #f8fafc;
+  --border: #1a2f4c;
+  --ring: #ff2d75;
+  color-scheme: dark;
+}
+
+html.light,
+.light {
+  --background: #f8fafc;
+  --foreground: #0a192f;
+  
+  --card: #ffffff;
+  --card-foreground: #0a192f;
+  --border: #e2e8f0;
+  --ring: #ff2d75;
+  color-scheme: light;
+}
+
+html, body, button, input, select, textarea {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Oculta a barra de deslocamento mantendo o scroll (ex.: coluna do login) */
+.sem-barra {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sem-barra::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Painel de Administração e Portal do Encarregado: tipografia Segoe UI regular (peso 400) em toda a
+   hierarquia, garantindo visual limpo, leve e sem sobrecarga de pesos. */
+.admin-tipografia,
+.admin-tipografia *,
+.portal-tipografia,
+.portal-tipografia * {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif !important;
+  font-weight: 400;
+}
+
+.portal-tipografia h1,
+.portal-tipografia h2,
+.portal-tipografia h3,
+.portal-tipografia h4,
+.portal-tipografia h5,
+.portal-tipografia h6 {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em;
+}
+
+/* Tipografia Segoe UI Regular para Títulos Gerais */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.015em;
+}
+
+/* Glassmorphism e Efeitos de Camadas */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.dark .glass-panel {
+  background: rgba(10, 25, 47, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(10, 25, 47, 0.1), 0 10px 10px -5px rgba(255, 45, 117, 0.05);
+}
+
+.dark .glass-card {
+  background: rgba(10, 25, 47, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(255, 45, 117, 0.2);
+}
+
+/* Gradientes Assinatura TM-Educa */
+.gradiente-tmeduca {
+  background: linear-gradient(135deg, #0a192f 0%, #102a45 60%, #17385c 100%);
+}
+
+.gradiente-rosa {
+  background: linear-gradient(135deg, #ff2d75 0%, #e11d48 100%);
+}
+
+.gradiente-rosa-suave {
+  background: linear-gradient(135deg, #fff1f5 0%, #ffe4ec 100%);
+}
+
+.text-gradient-rosa {
+  background: linear-gradient(135deg, #ff2d75 0%, #fb7185 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-navy {
+  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Botões com Glow Rosa de Alta Conversão */
+.btn-rosa {
+  background: linear-gradient(135deg, #ff2d75 0%, #e11d48 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(255, 45, 117, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-rosa:hover {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  box-shadow: 0 15px 30px -5px rgba(255, 45, 117, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Micro-animações */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulseGlowPink {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 45, 117, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 45, 117, 0.5);
+  }
+}
+
+.animate-glow-pink {
+  animation: pulseGlowPink 3s ease-in-out infinite;
+}
+
+/* Animação da barra de progresso do Carrossel Hero */
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress linear forwards;
+}
+
+/* Carrossel Infinito Duplo de Testemunhos (Marquee em Direções Opostas) */
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marqueeLeft 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marqueeRight 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+/* Regras de Impressão e Download em PDF */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  body {
+    background: white !important;
+    color: #0A192F !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Oculta toda a interface e elementos do site */
+  header,
+  nav,
+  aside,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Garante que o documento comprovativo preencha a página de impressão */
+  #comprovativo-oficial-imprimir {
+    display: block !important;
+    width: 100% !important;
+    background: white !important;
+    color: #0A192F !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+

@@ -1,0 +1,23 @@
+{
+  "name": "TM-Educa — Acompanhamento Escolar e Explicações",
+  "short_name": "TM-Educa",
+  "description": "Ecossistema de educação, explicações ao domicílio e aulas online em Luanda e Angola.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060a12",
+  "theme_color": "#07182E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/logo/icone-tmeduca.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

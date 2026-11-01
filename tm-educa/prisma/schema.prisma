@@ -1,0 +1,643 @@
+// Prisma Schema da plataforma TM-Educa
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FuncaoUtilizador {
+  ADMINISTRADOR
+  ENCARREGADO
+  PROFESSOR
+}
+
+enum EstadoProfessor {
+  Pendente
+  Em_analise
+  Verificado
+  Activo
+  Suspenso
+  Inactivo
+}
+
+enum ModalidadeAula {
+  Domicilio
+  Online
+  Centro
+}
+
+enum SexoAluno {
+  Masculino
+  Feminino
+}
+
+enum DiaSemana {
+  Segunda
+  Terca
+  Quarta
+  Quinta
+  Sexta
+  Sabado
+  Domingo
+}
+
+enum EstadoPedido {
+  EmAnalise
+  AProcurarProfessor
+  SemProfessorDisponivel
+  ProfessorEncontrado
+  AAguardarConfirmacao
+  Confirmado
+  Activo
+  Suspenso
+  Concluido
+  Cancelado
+}
+
+enum EstadoPropostaMatching {
+  Pendente
+  Aceite
+  Recusada
+  Expirada
+  Cancelada
+}
+
+enum ObjetivoPedagogico {
+  AcompanhamentoContinuo
+  MelhoriaNotas
+  PreparacaoTestes
+  PreparacaoExames
+  RecuperacaoMateria
+  Outro
+}
+
+enum TipoContrato {
+  Cliente
+  Professor
+}
+
+enum EstadoContrato {
+  Rascunho
+  Activo
+  Suspenso
+  Rescindido
+  Concluido
+}
+
+enum EstadoAcompanhamento {
+  PendenteAtivacao
+  Activo
+  Suspenso
+  Concluido
+  Cancelado
+}
+
+enum EstadoAula {
+  Agendada
+  Realizada
+  Aluno_Ausente
+  Professor_Ausente
+  Cancelada
+  Reagendada
+  Substituida
+}
+
+enum EstadoCobranca {
+  Pendente
+  EmAnalise
+  Pago
+  Falhado
+  Cancelado
+  Reembolsado
+}
+
+enum MetodoPagamento {
+  TransferenciaBancaria
+  MulticaixaExpress
+  Deposito
+  NumerarioCentro
+}
+
+enum EstadoFolhaRemuneracao {
+  Rascunho
+  EmRevisao
+  Aprovada
+  Paga
+  Cancelada
+}
+
+enum TipoOcorrencia {
+  Falta
+  Reclamacao
+  Comportamento
+  Pagamento
+  Incidente
+  Administrativo
+}
+
+enum GravidadeOcorrencia {
+  Baixa
+  Media
+  Alta
+  Urgente
+}
+
+enum EstadoOcorrencia {
+  Aberta
+  EmInvestigacao
+  AguardandoParecer
+  Resolvida
+  Cancelada
+}
+
+model Utilizador {
+  id               String            @id @default(uuid())
+  nomeCompleto     String            @map("nome_completo")
+  email            String            @unique
+  telefone         String
+  palavraPasseHash String            @map("palavra_passe_hash")
+  funcao           FuncaoUtilizador  @default(ENCARREGADO)
+  activo           Boolean           @default(true)
+  criadoEm         DateTime          @default(now()) @map("criado_em")
+  atualizadoEm     DateTime          @updatedAt @map("atualizado_em")
+
+  perfilEncarregado            PerfilEncarregado?
+  perfilProfessor              PerfilProfessor?
+  perfilAdmin                  PerfilAdministrador?
+  historicosEstadosModificados HistoricoEstadoPedido[]
+  contratos                    Contrato[]
+  ocorrenciasCriadas           Ocorrencia[]            @relation("OcorrenciasCriadas")
+  ocorrenciasAtribuidas        Ocorrencia[]            @relation("OcorrenciasAtribuidas")
+
+  @@map("utilizadores")
+}
+
+model PerfilEncarregado {
+  id           String      @id @default(uuid())
+  utilizadorId String      @unique @map("utilizador_id")
+  utilizador   Utilizador  @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  nif          String?
+  municipio    String?
+  bairro       String?
+  endereco     String?
+  profissao    String?
+  criadoEm     DateTime    @default(now()) @map("criado_em")
+
+  alunos          Aluno[]
+  pedidos         PedidoAcompanhamento[]
+  acompanhamentos AcompanhamentoServico[]
+  cobrancas       CobrancaCliente[]
+  avaliacoesDadas AvaliacaoProfessor[]
+
+  @@map("perfis_encarregados")
+}
+
+model Aluno {
+  id             String            @id @default(uuid())
+  encarregadoId  String            @map("encarregado_id")
+  encarregado    PerfilEncarregado @relation(fields: [encarregadoId], references: [id], onDelete: Cascade)
+  nomeCompleto   String            @map("nome_completo")
+  dataNascimento DateTime?         @map("data_nascimento")
+  sexo           SexoAluno?
+  anoEscolar     String            @map("ano_escolar") // ex: "1.º Ano", "10.º Ano"
+  sistemaEnsino  String            @default("Geral Angolano") @map("sistema_ensino")
+  escola         String?
+  dificuldades   String?           @db.Text
+  objectivos     String?           @db.Text
+  observacoes    String?           @db.Text
+  activo         Boolean           @default(true)
+  criadoEm       DateTime          @default(now()) @map("criado_em")
+  atualizadoEm   DateTime          @updatedAt @map("atualizado_em")
+
+  pedidos         PedidoAcompanhamento[]
+  acompanhamentos AcompanhamentoServico[]
+  avaliacoes      AvaliacaoProfessor[]
+
+  @@map("alunos")
+}
+
+model PerfilProfessor {
+  id                String          @id @default(uuid())
+  utilizadorId      String          @unique @map("utilizador_id")
+  utilizador        Utilizador      @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  fotoUrl           String?         @map("foto_url")
+  biografia         String?
+  formacaoAcademica String?         @map("formacao_academica")
+  anosExperiencia   Int             @default(0) @map("anos_experiencia")
+  estado            EstadoProfessor @default(Pendente)
+  avaliacaoMedia    Float           @default(5.0) @map("avaliacao_media")
+  totalAulasDadas   Int             @default(0) @map("total_aulas_dadas")
+  observacoesAdmin  String?         @map("observacoes_admin")
+  criadoEm          DateTime        @default(now()) @map("criado_em")
+
+  disponibilidades      ProfessorDisponibilidade[]
+  zonasAtendimento      ProfessorZonaAtendimento[]
+  disciplinasLecionadas ProfessorDisciplina[]
+  pedidosAtribuidos     PedidoAcompanhamento[]
+  propostasMatching     PropostaMatching[]
+  acompanhamentos       AcompanhamentoServico[]
+  folhasRemuneracao     FolhaRemuneracao[]
+  avaliacoesRecebidas   AvaliacaoProfessor[]
+
+  @@map("perfis_professores")
+}
+
+model ProfessorDisciplina {
+  id           String             @id @default(uuid())
+  professorId  String             @map("professor_id")
+  professor    PerfilProfessor    @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  disciplinaId String             @map("disciplina_id")
+  disciplina   CatalogoDisciplina @relation(fields: [disciplinaId], references: [id], onDelete: Cascade)
+  criadoEm     DateTime           @default(now()) @map("criado_em")
+
+  @@unique([professorId, disciplinaId])
+  @@map("professores_disciplinas")
+}
+
+model ProfessorDisponibilidade {
+  id          String          @id @default(uuid())
+  professorId String          @map("professor_id")
+  professor   PerfilProfessor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  diaSemana   DiaSemana       @map("dia_semana")
+  horaInicio  String          @map("hora_inicio") // ex: "16:00"
+  horaFim     String          @map("hora_fim")    // ex: "20:00"
+  activo      Boolean         @default(true)
+  criadoEm    DateTime        @default(now()) @map("criado_em")
+
+  @@map("professores_disponibilidades")
+}
+
+model ProfessorZonaAtendimento {
+  id          String          @id @default(uuid())
+  professorId String          @map("professor_id")
+  professor   PerfilProfessor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  municipio   String
+  bairro      String?
+  criadoEm    DateTime        @default(now()) @map("criado_em")
+
+  @@map("professores_zonas_atendimento")
+}
+
+model PerfilAdministrador {
+  id           String     @id @default(uuid())
+  utilizadorId String     @unique @map("utilizador_id")
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  departamento String?
+  cargo        String?    @map("cargo")
+  fotoUrl      String?    @map("foto_url")
+  criadoEm     DateTime   @default(now()) @map("criado_em")
+
+  @@map("perfis_administradores")
+}
+
+// ==========================================
+// CATÁLOGO ESCOLAR E PREÇÁRIO OFICIAL TM-EDUCA
+// ==========================================
+
+model CatalogoCiclo {
+  id     String               @id @default(uuid())
+  nome   String               @unique // "Ensino Primário", "I Ciclo", "II Ciclo"
+  ordem  Int                  @default(1)
+  anos   CatalogoAnoEscolar[]
+
+  @@map("catalogo_ciclos")
+}
+
+model CatalogoAnoEscolar {
+  id           String                 @id @default(uuid())
+  cicloId      String                 @map("ciclo_id")
+  ciclo        CatalogoCiclo          @relation(fields: [cicloId], references: [id], onDelete: Cascade)
+  nome         String                 @unique // "1.º Ano", "2.º Ano", ..., "12.º Ano"
+  ordem        Int                    @default(1)
+  precos       TabelaPreco[]
+  remuneracoes TabelaRemuneracao[]
+  pedidos      PedidoAcompanhamento[]
+
+  @@map("catalogo_anos_escolares")
+}
+
+model CatalogoDisciplina {
+  id              String                  @id @default(uuid())
+  nome            String                  @unique // "Matemática", "Física", "Língua Portuguesa"...
+  descricao       String?
+  activo          Boolean                 @default(true)
+  criadoEm        DateTime                @default(now()) @map("criado_em")
+
+  pedidos         PedidoAcompanhamento[]
+  professores     ProfessorDisciplina[]
+  acompanhamentos AcompanhamentoServico[]
+
+  @@map("catalogo_disciplinas")
+}
+
+model TabelaPreco {
+  id             String             @id @default(uuid())
+  anoEscolarId   String             @map("ano_escolar_id")
+  anoEscolar     CatalogoAnoEscolar @relation(fields: [anoEscolarId], references: [id], onDelete: Cascade)
+  duracaoMinutos Int                @map("duracao_minutos") // 60 (1h), 90 (1h30), 120 (2h)
+  precoPorAulaKz Int                @map("preco_por_aula_kz") // Em Kwanzas (Kz)
+  activo         Boolean            @default(true)
+  vigenteDesde   DateTime           @default(now()) @map("vigente_desde")
+
+  @@unique([anoEscolarId, duracaoMinutos])
+  @@map("tabelas_precos")
+}
+
+model TabelaRemuneracao {
+  id                   String             @id @default(uuid())
+  anoEscolarId         String             @map("ano_escolar_id")
+  anoEscolar           CatalogoAnoEscolar @relation(fields: [anoEscolarId], references: [id], onDelete: Cascade)
+  duracaoMinutos       Int                @map("duracao_minutos") // 60 (1h), 90 (1h30), 120 (2h)
+  remuneracaoPorAulaKz Int                @map("remuneracao_por_aula_kz") // Valor pago ao professor em Kz
+  activo               Boolean            @default(true)
+  vigenteDesde         DateTime           @default(now()) @map("vigente_desde")
+
+  @@unique([anoEscolarId, duracaoMinutos])
+  @@map("tabelas_remuneracoes")
+}
+
+// ==========================================
+// CICLO OPERACIONAL: PEDIDOS E MATCHING
+// ==========================================
+
+model PedidoAcompanhamento {
+  id                  String             @id @default(uuid())
+  encarregadoId       String             @map("encarregado_id")
+  encarregado         PerfilEncarregado  @relation(fields: [encarregadoId], references: [id], onDelete: Cascade)
+  alunoId             String             @map("aluno_id")
+  aluno               Aluno              @relation(fields: [alunoId], references: [id], onDelete: Cascade)
+  anoEscolarId        String             @map("ano_escolar_id")
+  anoEscolar          CatalogoAnoEscolar @relation(fields: [anoEscolarId], references: [id])
+  disciplinaId        String             @map("disciplina_id")
+  disciplina          CatalogoDisciplina @relation(fields: [disciplinaId], references: [id])
+  /// Disciplinas adicionais escritas pelo pai (ex.: cursos do II Ciclo do
+  /// Ensino Secundário, onde cada aluno frequenta percursos diferentes).
+  disciplinasAdicionais String?         @map("disciplinas_adicionais") @db.Text
+  modalidade          ModalidadeAula     @default(Domicilio)
+  duracaoMinutos      Int                @default(60) @map("duracao_minutos")
+  frequenciaSemanal   Int                @default(2) @map("frequencia_semanal")
+  diasSemana          String             @map("dias_semana") // Ex: "Segunda, Quarta"
+  horarioPreferencial String             @map("horario_preferencial") // Ex: "15:00 - 17:00"
+  objetivo            ObjetivoPedagogico @default(AcompanhamentoContinuo)
+  observacoes         String?            @db.Text
+  municipio           String?
+  bairro              String?
+  endereco            String?
+  pontoReferencia     String?            @map("ponto_referencia")
+  precoUnitarioKz     Int                @default(0) @map("preco_unitario_kz")
+  estimativaMensalKz  Int                @default(0) @map("estimativa_mensal_kz")
+  estado              EstadoPedido       @default(EmAnalise)
+  professorAtribuidoId String?           @map("professor_atribuido_id")
+  professorAtribuido  PerfilProfessor?   @relation(fields: [professorAtribuidoId], references: [id], onDelete: SetNull)
+  criadoEm            DateTime           @default(now()) @map("criado_em")
+  atualizadoEm        DateTime           @updatedAt @map("atualizado_em")
+
+  historico           HistoricoEstadoPedido[]
+  propostas           PropostaMatching[]
+  acompanhamento      AcompanhamentoServico?
+
+  @@map("pedidos_acompanhamento")
+}
+
+model HistoricoEstadoPedido {
+  id             String               @id @default(uuid())
+  pedidoId       String               @map("pedido_id")
+  pedido         PedidoAcompanhamento @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  estadoAnterior EstadoPedido         @map("estado_anterior")
+  novoEstado     EstadoPedido         @map("novo_estado")
+  alteradoPorId  String?              @map("alterado_por_id")
+  alteradoPor    Utilizador?          @relation(fields: [alteradoPorId], references: [id], onDelete: SetNull)
+  motivo         String?              @db.Text
+  criadoEm       DateTime             @default(now()) @map("criado_em")
+
+  @@map("historico_estados_pedidos")
+}
+
+model PropostaMatching {
+  id                  String                 @id @default(uuid())
+  pedidoId            String                 @map("pedido_id")
+  pedido              PedidoAcompanhamento   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  professorId         String                 @map("professor_id")
+  professor           PerfilProfessor        @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  pontuacaoMatching   Int                    @default(0) @map("pontuacao_matching") // 0 a 100
+  remuneracaoPorAulaKz Int                   @map("remuneracao_por_aula_kz")
+  estado              EstadoPropostaMatching @default(Pendente)
+  motivoRecusa        String?                @map("motivo_recusa") @db.Text
+  expiraEm            DateTime?              @map("expira_em")
+  respondidoEm        DateTime?              @map("respondido_em")
+  criadoEm            DateTime               @default(now()) @map("criado_em")
+
+  @@map("propostas_matching")
+}
+
+// ==========================================
+// CONTRATOS, ACOMPANHAMENTOS E CALENDÁRIO
+// ==========================================
+
+model Contrato {
+  id             String         @id @default(uuid())
+  numeroContrato String         @unique @map("numero_contrato")
+  tipo           TipoContrato
+  utilizadorId   String         @map("utilizador_id")
+  utilizador     Utilizador     @relation(fields: [utilizadorId], references: [id])
+  pedidoId       String?        @map("pedido_id")
+  valorMensalKz  Int            @default(0) @map("valor_mensal_kz")
+  valorPorAulaKz Int            @default(0) @map("valor_por_aula_kz")
+  dataInicio     DateTime       @map("data_inicio")
+  dataFim        DateTime?      @map("data_fim")
+  termosAceites  Boolean        @default(true) @map("termos_aceites")
+  estado         EstadoContrato @default(Activo)
+  criadoEm       DateTime       @default(now()) @map("criado_em")
+  atualizadoEm   DateTime       @updatedAt @map("atualizado_em")
+
+  acompanhamentos AcompanhamentoServico[]
+  cobrancas       CobrancaCliente[]
+
+  @@map("contratos")
+}
+
+model AcompanhamentoServico {
+  id                  String               @id @default(uuid())
+  codigo              String               @unique // ex: "ACOMP-2026-0001"
+  contratoId          String?              @map("contrato_id")
+  contrato            Contrato?            @relation(fields: [contratoId], references: [id], onDelete: SetNull)
+  pedidoId            String?              @unique @map("pedido_id")
+  pedido              PedidoAcompanhamento? @relation(fields: [pedidoId], references: [id], onDelete: SetNull)
+  alunoId             String               @map("aluno_id")
+  aluno               Aluno                @relation(fields: [alunoId], references: [id], onDelete: Cascade)
+  encarregadoId       String               @map("encarregado_id")
+  encarregado         PerfilEncarregado    @relation(fields: [encarregadoId], references: [id], onDelete: Cascade)
+  professorId         String               @map("professor_id")
+  professor           PerfilProfessor      @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  disciplinaId        String               @map("disciplina_id")
+  disciplina          CatalogoDisciplina   @relation(fields: [disciplinaId], references: [id])
+  modalidade          ModalidadeAula       @default(Domicilio)
+  duracaoMinutos      Int                  @default(60) @map("duracao_minutos")
+  frequenciaSemanal   Int                  @default(2) @map("frequencia_semanal")
+  diasSemana          String               @map("dias_semana") // Ex: "Segunda, Quarta"
+  horarioPreferencial String               @map("horario_preferencial") // Ex: "15:00 - 16:30"
+  precoPorAulaKz      Int                  @map("preco_por_aula_kz")
+  remuneracaoPorAulaKz Int                 @map("remuneracao_por_aula_kz")
+  estimativaMensalKz  Int                  @map("estimativa_mensal_kz")
+  estado              EstadoAcompanhamento @default(Activo)
+  dataInicio          DateTime             @default(now()) @map("data_inicio")
+  dataFim             DateTime?            @map("data_fim")
+  municipio           String?
+  bairro              String?
+  endereco            String?
+  criadoEm            DateTime             @default(now()) @map("criado_em")
+  atualizadoEm        DateTime             @updatedAt @map("atualizado_em")
+
+  aulas       Aula[]
+  avaliacoes  AvaliacaoProfessor[]
+  ocorrencias Ocorrencia[]
+
+  @@map("acompanhamentos_servicos")
+}
+
+model Aula {
+  id                     String                @id @default(uuid())
+  acompanhamentoId       String                @map("acompanhamento_id")
+  acompanhamento         AcompanhamentoServico @relation(fields: [acompanhamentoId], references: [id], onDelete: Cascade)
+  numeroSessao           Int                   @default(1) @map("numero_sessao")
+  dataHoraInicio         DateTime              @map("data_hora_inicio")
+  dataHoraFim            DateTime              @map("data_hora_fim")
+  duracaoMinutos         Int                   @map("duracao_minutos")
+  modalidade             ModalidadeAula
+  estado                 EstadoAula            @default(Agendada)
+  sumario                String?               @db.Text
+  trabalhosDeCasa        String?               @db.Text @map("trabalhos_de_casa")
+  observacoesPedagogicas String?               @db.Text @map("observacoes_pedagogicas")
+  precoCobradoKz         Int                   @map("preco_cobrado_kz")
+  remuneracaoPagaKz      Int                   @map("remuneracao_paga_kz")
+  registadoEm            DateTime?             @map("registado_em")
+  criadoEm               DateTime              @default(now()) @map("criado_em")
+  atualizadoEm           DateTime              @updatedAt @map("atualizado_em")
+
+  reposicaoDe           ReposicaoAula? @relation("AulaReposicao")
+  aulaOriginalReposicao ReposicaoAula? @relation("AulaOriginal")
+  ocorrencias           Ocorrencia[]
+
+  @@map("aulas")
+}
+
+model ReposicaoAula {
+  id                      String   @id @default(uuid())
+  aulaOriginalId          String   @unique @map("aula_original_id")
+  aulaOriginal            Aula     @relation("AulaOriginal", fields: [aulaOriginalId], references: [id], onDelete: Cascade)
+  aulaReposicaoId         String   @unique @map("aula_reposicao_id")
+  aulaReposicao           Aula     @relation("AulaReposicao", fields: [aulaReposicaoId], references: [id], onDelete: Cascade)
+  motivo                  String   @db.Text
+  responsavelCancelamento String   @map("responsavel_cancelamento")
+  criadoEm                DateTime @default(now()) @map("criado_em")
+
+  @@map("reposicoes_aulas")
+}
+
+// ==========================================
+// MÓDULO FINANCEIRO: COBRANÇAS E REMUNERAÇÕES
+// ==========================================
+
+model CobrancaCliente {
+  id                 String           @id @default(uuid())
+  numeroFatura       String           @unique @map("numero_fatura") // ex: "TM-FAT-2026-0001"
+  contratoId         String           @map("contrato_id")
+  contrato           Contrato         @relation(fields: [contratoId], references: [id], onDelete: Cascade)
+  encarregadoId      String           @map("encarregado_id")
+  encarregado        PerfilEncarregado @relation(fields: [encarregadoId], references: [id], onDelete: Cascade)
+  mesReferencia      String           @map("mes_referencia") // ex: "Outubro 2026"
+  valorKz            Int              @map("valor_kz")
+  metodo             MetodoPagamento  @default(TransferenciaBancaria)
+  estado             EstadoCobranca   @default(Pendente)
+  dataVencimento     DateTime         @map("data_vencimento")
+  dataPagamento      DateTime?        @map("data_pagamento")
+  comprovativoUrl    String?          @map("comprovativo_url")
+  referenciaBancaria String?          @map("referencia_bancaria")
+  bancoOrigem        String?          @map("banco_origem")
+  observacoes        String?          @db.Text
+  validadoPorId      String?          @map("validado_por_id")
+  validadoEm         DateTime?        @map("validado_em")
+  criadoEm           DateTime         @default(now()) @map("criado_em")
+  atualizadoEm       DateTime         @updatedAt @map("atualizado_em")
+
+  @@map("cobrancas_clientes")
+}
+
+model FolhaRemuneracao {
+  id                       String                 @id @default(uuid())
+  codigoFolha              String                 @unique @map("codigo_folha") // ex: "TM-REM-2026-0001"
+  professorId              String                 @map("professor_id")
+  professor                PerfilProfessor        @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  mesReferencia            String                 @map("mes_referencia") // ex: "Outubro 2026"
+  totalAulasElegiveis      Int                    @default(0) @map("total_aulas_elegiveis")
+  valorBrutoKz             Int                    @default(0) @map("valor_bruto_kz")
+  descontosKz              Int                    @default(0) @map("descontos_kz")
+  valorLiquidoKz           Int                    @default(0) @map("valor_liquido_kz")
+  estado                   EstadoFolhaRemuneracao @default(Rascunho)
+  ibanDestino              String?                @map("iban_destino")
+  comprovativoPagamentoUrl String?                @map("comprovativo_pagamento_url")
+  dataLiquidacao           DateTime?              @map("data_liquidacao")
+  observacoes              String?                @db.Text
+  processadoPorId          String?                @map("processado_por_id")
+  criadoEm                 DateTime               @default(now()) @map("criado_em")
+  atualizadoEm             DateTime               @updatedAt @map("atualizado_em")
+
+  @@map("folhas_remuneracoes")
+}
+
+// ==========================================
+// MÓDULO DE QUALIDADE: AVALIAÇÕES E OCORRÊNCIAS
+// ==========================================
+
+model AvaliacaoProfessor {
+  id                  String                @id @default(uuid())
+  acompanhamentoId    String                @map("acompanhamento_id")
+  acompanhamento      AcompanhamentoServico @relation(fields: [acompanhamentoId], references: [id], onDelete: Cascade)
+  professorId         String                @map("professor_id")
+  professor           PerfilProfessor       @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  encarregadoId       String                @map("encarregado_id")
+  encarregado         PerfilEncarregado     @relation(fields: [encarregadoId], references: [id], onDelete: Cascade)
+  alunoId             String                @map("aluno_id")
+  aluno               Aluno                 @relation(fields: [alunoId], references: [id], onDelete: Cascade)
+  qualidadePedagogica Int                   @default(5) @map("qualidade_pedagogica") // 1 a 5
+  pontualidade        Int                   @default(5) // 1 a 5
+  comunicacao         Int                   @default(5) // 1 a 5
+  adaptacaoAluno      Int                   @default(5) @map("adaptacao_aluno") // 1 a 5
+  profissionalismo    Int                   @default(5) // 1 a 5
+  notaMedia           Float                 @default(5.0) @map("nota_media")
+  comentario          String?               @db.Text
+  visivelPublicamente Boolean               @default(true) @map("visivel_publicamente")
+  criadoEm            DateTime              @default(now()) @map("criado_em")
+
+  @@map("avaliacoes_professores")
+}
+
+model Ocorrencia {
+  id               String                 @id @default(uuid())
+  numeroOcorrencia String                 @unique @map("numero_ocorrencia") // ex: "TM-OCO-2026-0001"
+  tipo             TipoOcorrencia
+  gravidade        GravidadeOcorrencia    @default(Media)
+  estado           EstadoOcorrencia       @default(Aberta)
+  titulo           String
+  descricao        String                 @db.Text
+  autorId          String                 @map("autor_id")
+  autor            Utilizador             @relation("OcorrenciasCriadas", fields: [autorId], references: [id], onDelete: Cascade)
+  responsavelId    String?                @map("responsavel_id")
+  responsavel      Utilizador?            @relation("OcorrenciasAtribuidas", fields: [responsavelId], references: [id], onDelete: SetNull)
+  acompanhamentoId String?                @map("acompanhamento_id")
+  acompanhamento   AcompanhamentoServico? @relation(fields: [acompanhamentoId], references: [id], onDelete: SetNull)
+  aulaId           String?                @map("aula_id")
+  aula             Aula?                  @relation(fields: [aulaId], references: [id], onDelete: SetNull)
+  resolucao        String?                @db.Text
+  resolvidoEm      DateTime?              @map("resolvido_em")
+  criadoEm         DateTime               @default(now()) @map("criado_em")
+  atualizadoEm     DateTime               @updatedAt @map("atualizado_em")
+
+  @@map("ocorrencias")
+}
+
+
