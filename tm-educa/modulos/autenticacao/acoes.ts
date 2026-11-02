@@ -106,11 +106,24 @@ export async function acaoEntrar(
       mensagem: "Sessão iniciada com sucesso.",
       urlRedirecionamento: destino,
     };
-  } catch (erro) {
+  } catch (erro: any) {
     console.error("Erro na ação de entrar:", erro);
+    const msg = erro?.message || "";
+    if (
+      msg.includes("DATABASE_URL") ||
+      msg.includes("Can't reach database server") ||
+      msg.includes("P1001") ||
+      msg.includes("connect ECONNREFUSED") ||
+      msg.includes("Environment variable not found")
+    ) {
+      return {
+        sucesso: false,
+        mensagem: `Erro de ligação à base de dados: Verifique se a variável DATABASE_URL está configurada na Hostinger (${erro?.code || "P1001"}).`,
+      };
+    }
     return {
       sucesso: false,
-      mensagem: "Ocorreu um erro ao processar o seu acesso. Tente novamente.",
+      mensagem: `Ocorreu um erro ao processar o seu acesso: ${erro?.message || "Tente novamente."}`,
     };
   }
 }
