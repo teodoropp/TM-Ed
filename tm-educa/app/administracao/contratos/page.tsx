@@ -10,6 +10,7 @@ import { AmbienteAdmin } from "@/componentes/admin/ambiente-admin";
 import { CabecalhoPagina } from "@/componentes/admin/cabecalho-pagina";
 import { CartaoKpi } from "@/componentes/admin/cartao-kpi";
 import { BotaoModalEmitirCobranca } from "@/componentes/financeiro/ModalEmitirCobranca";
+import { ModalHomologarContratoAdmin } from "@/componentes/contratos/ModalHomologarContratoAdmin";
 import { FileText } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -84,7 +85,7 @@ export default async function PaginaAdminContratos() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full min-w-[720px] text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/30 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     <th className="py-3 px-5">N.º de Contrato</th>
@@ -93,6 +94,7 @@ export default async function PaginaAdminContratos() {
                     <th className="py-3 px-5">Preço / Aula</th>
                     <th className="py-3 px-5">Data de Início</th>
                     <th className="py-3 px-5">Estado</th>
+                    <th className="py-3 px-5 text-right">Homologação / BI</th>
                     <th className="py-3 px-5 text-right">Faturação</th>
                   </tr>
                 </thead>
@@ -137,6 +139,19 @@ export default async function PaginaAdminContratos() {
                         >
                           {ctr.estado}
                         </Badge>
+                      </td>
+
+                      <td className="py-4 px-5 text-right">
+                        <ModalHomologarContratoAdmin
+                          contratoId={ctr.id}
+                          numeroContrato={ctr.numeroContrato}
+                          clienteNome={ctr.utilizador.nomeCompleto}
+                          biNumero={ctr.biNumero}
+                          biAnexoUrl={ctr.biAnexoUrl}
+                          assinadoPorUtilizador={ctr.assinadoPorUtilizador}
+                          assinadoPorAdmin={ctr.assinadoPorAdmin}
+                          biAdminAnexoUrl={ctr.biAdminAnexoUrl}
+                        />
                       </td>
 
                       <td className="py-4 px-5 text-right">

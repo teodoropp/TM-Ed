@@ -41,6 +41,10 @@ export function FormularioRegistar() {
   const [nomeGoogle, setNomeGoogle] = React.useState("");
   const [carregandoGoogle, setCarregandoGoogle] = React.useState(false);
 
+  const iniciarFluxoGoogle = () => {
+    window.location.href = `/api/auth/google?funcao=${funcao || "ENCARREGADO"}&modo=registar`;
+  };
+
   async function manipularRegistoGoogle(e: React.FormEvent) {
     e.preventDefault();
     setMensagemErro(null);
@@ -334,7 +338,7 @@ export function FormularioRegistar() {
 
       <button
         type="button"
-        onClick={() => setModalGoogleAberto(true)}
+        onClick={iniciarFluxoGoogle}
         className="w-full h-11 px-4 rounded-[10px] bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white text-xs font-normal flex items-center justify-center gap-3 transition-all shadow-sm cursor-pointer"
       >
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">

@@ -51,8 +51,58 @@ export function TabelaPrecosVisual({ ciclos }: PropsTabelaPrecosVisual) {
           </CartaoCabecalho>
 
           <CartaoConteudo className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            {/* VISTA MOBILE: Layout em cartões individuais por ano para visualização perfeita em telemóveis */}
+            <div className="block sm:hidden divide-y divide-slate-100 dark:divide-slate-800/80 p-3 space-y-3">
+              {ciclo.anos.map((ano) => {
+                const preco60 = ano.precos.find((p) => p.duracaoMinutos === 60)?.precoPorAulaKz || 0;
+                const preco90 = ano.precos.find((p) => p.duracaoMinutos === 90)?.precoPorAulaKz || 0;
+                const preco120 = ano.precos.find((p) => p.duracaoMinutos === 120)?.precoPorAulaKz || 0;
+
+                return (
+                  <div key={ano.id} className="pt-3 first:pt-0 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span className="font-bold text-sm text-slate-900 dark:text-white">
+                          {ano.nome}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-medium">por aula</span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2">
+                      {/* 60 min */}
+                      <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700">
+                        <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">1 Hora</span>
+                        <span className="text-xs font-bold text-slate-900 dark:text-slate-100 mt-0.5 whitespace-nowrap">
+                          {formatarKz(preco60)}
+                        </span>
+                      </div>
+
+                      {/* 90 min - Recomendado */}
+                      <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-emerald-500/10 dark:bg-emerald-950/40 border border-emerald-500/40 relative">
+                        <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">1h30</span>
+                        <span className="text-xs font-extrabold text-emerald-700 dark:text-emerald-300 mt-0.5 whitespace-nowrap">
+                          {formatarKz(preco90)}
+                        </span>
+                      </div>
+
+                      {/* 120 min */}
+                      <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700">
+                        <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">2 Horas</span>
+                        <span className="text-xs font-bold text-slate-900 dark:text-slate-100 mt-0.5 whitespace-nowrap">
+                          {formatarKz(preco120)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* VISTA DESKTOP E TABLET: Tabela tradicional ampla com scroll suave */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full min-w-[580px] text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/30 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     <th className="py-3.5 px-5">Ano de Escolaridade</th>
@@ -84,22 +134,22 @@ export function TabelaPrecosVisual({ ciclos }: PropsTabelaPrecosVisual) {
 
                     return (
                       <tr key={ano.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
-                        <td className="py-4 px-5 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <td className="py-4 px-5 font-bold text-slate-900 dark:text-white flex items-center gap-2 whitespace-nowrap">
                           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                           {ano.nome}
                         </td>
                         <td className="py-4 px-5 text-center">
-                          <span className="font-extrabold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                          <span className="font-extrabold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 whitespace-nowrap inline-block">
                             {formatarKz(preco60)}
                           </span>
                         </td>
                         <td className="py-4 px-5 text-center">
-                          <span className="font-extrabold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                          <span className="font-extrabold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800 whitespace-nowrap inline-block">
                             {formatarKz(preco90)}
                           </span>
                         </td>
                         <td className="py-4 px-5 text-center">
-                          <span className="font-extrabold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                          <span className="font-extrabold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 whitespace-nowrap inline-block">
                             {formatarKz(preco120)}
                           </span>
                         </td>

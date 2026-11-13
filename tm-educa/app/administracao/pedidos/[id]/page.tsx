@@ -19,7 +19,7 @@ import {
 import { notFound, redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Triagem e Matching de Pedido | Administração TM-Educa",
+  title: "Triagem e Atribuição de Pedido | Administração TM-Educa",
 };
 
 interface PropsPaginaAdminTriagem {
@@ -55,7 +55,7 @@ export default async function PaginaAdminTriagem({ params }: PropsPaginaAdminTri
         caminho={[
           { rotulo: "Administração", href: "/administracao" },
           { rotulo: "Pedidos", href: "/administracao/pedidos" },
-          { rotulo: "Triagem & Matching" },
+          { rotulo: "Triagem & Atribuição" },
         ]}
         acoes={
           <>
@@ -122,7 +122,7 @@ export default async function PaginaAdminTriagem({ params }: PropsPaginaAdminTri
                   {pedido.disciplinasAdicionais}
                 </p>
                 <p className="mt-1 text-[11px] text-amber-700/80 dark:text-amber-400/80">
-                  A formalizar no catálogo antes do matching.
+                  A formalizar no catálogo antes da atribuição.
                 </p>
               </div>
             )}

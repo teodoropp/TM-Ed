@@ -24,6 +24,8 @@ import {
   Home,
   Sun,
   Moon,
+  FileSignature,
+  FolderArchive,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -41,6 +43,8 @@ const MAPA_ICONES: Record<NomeIconePais, LucideIcon> = {
   avaliacoes: Star,
   pagamentos: CreditCard,
   precos: Calculator,
+  contratos: FileSignature,
+  documentos: FolderArchive,
   ocorrencias: ShieldAlert,
   perfil: UserCog,
 };

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { acaoRegistar, acaoAutenticarGoogle } from "@/modulos/autenticacao/acoes";
 import { LogoTMEduca } from "@/componentes/ui/logo-tmeduca";
 import {
@@ -67,6 +67,9 @@ function obterDiasDaSemana(dataReferencia: Date): DiaSemanaItem[] {
 
 export function TelaRegistar() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const avisoGoogle = searchParams.get("aviso_google");
+  const erroParam = searchParams.get("erro");
 
   const [funcao, setFuncao] = React.useState<"ENCARREGADO" | "PROFESSOR">(
     "ENCARREGADO"
@@ -79,15 +82,38 @@ export function TelaRegistar() {
   const [mostrarSenha, setMostrarSenha] = React.useState(false);
 
   const [carregando, setCarregando] = React.useState(false);
-  const [mensagemErro, setMensagemErro] = React.useState<string | null>(null);
+  const [mensagemErro, setMensagemErro] = React.useState<string | null>(() => {
+    if (erroParam === "google_cancelado") {
+      return "O registo com o Google foi cancelado.";
+    }
+    if (erroParam === "google_token_invalido" || erroParam === "google_falha") {
+      return "Não foi possível validar a conta Google. Tente novamente.";
+    }
+    if (erroParam === "google_sem_email") {
+      return "A conta Google não forneceu um correio eletrónico válido.";
+    }
+    return null;
+  });
 
   // Estado para Modal de Registo com Google
-  const [modalGoogleAberto, setModalGoogleAberto] = React.useState(false);
+  const [modalGoogleAberto, setModalGoogleAberto] = React.useState(() => {
+    return avisoGoogle === "credenciais_ausentes";
+  });
   const [emailGoogle, setEmailGoogle] = React.useState("teodorop990@gmail.com");
   const [nomeGoogle, setNomeGoogle] = React.useState("Teodoro Pedro");
   const [funcaoGoogle, setFuncaoGoogle] = React.useState<"ENCARREGADO" | "PROFESSOR">("ENCARREGADO");
   const [carregandoGoogle, setCarregandoGoogle] = React.useState(false);
   const [erroGoogle, setErroGoogle] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (avisoGoogle === "credenciais_ausentes") {
+      setModalGoogleAberto(true);
+    }
+  }, [avisoGoogle]);
+
+  const iniciarFluxoGoogle = () => {
+    window.location.href = `/api/auth/google?funcao=${funcao}&modo=registar`;
+  };
 
   // Gestão dinâmica da semana e seleção automática do dia de hoje
   const [dataAtual, setDataAtual] = React.useState<Date>(() => new Date());
@@ -421,7 +447,7 @@ export function TelaRegistar() {
               <div>
                 <button
                   type="button"
-                  onClick={() => setModalGoogleAberto(true)}
+                  onClick={iniciarFluxoGoogle}
                   className="w-full h-10 px-4 rounded-[10px] bg-[#102A45]/60 hover:bg-[#102A45] active:scale-[0.99] border border-slate-700/80 text-white text-xs font-normal flex items-center justify-center gap-3 transition-all shadow-sm hover:border-slate-600 cursor-pointer"
                 >
                   <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
@@ -602,10 +628,35 @@ export function TelaRegistar() {
                   Registar com a Google
                 </h3>
                 <p className="text-xs text-slate-400 font-normal">
-                  Crie a sua conta na TM-Educa num clique
+                  {avisoGoogle === "credenciais_ausentes"
+                    ? "Configuração de chaves Google no ficheiro .env"
+                    : "Crie a sua conta na TM-Educa num clique"}
                 </p>
               </div>
             </div>
+
+            {avisoGoogle === "credenciais_ausentes" && (
+              <div className="mb-4 rounded-[10px] border border-amber-500/40 bg-amber-950/50 p-3.5 text-xs text-amber-200 space-y-2">
+                <div className="flex items-center gap-1.5 font-bold text-amber-300">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-amber-400" />
+                  <span>Para ativar o Registo Real da Google:</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  Adicione as seguintes linhas ao seu ficheiro <code className="bg-black/50 px-1.5 py-0.5 rounded text-amber-300 font-mono">.env</code>:
+                </p>
+                <div className="bg-black/70 p-2.5 rounded-[8px] font-mono text-[11px] text-emerald-400 select-all border border-slate-700/60 leading-relaxed">
+                  GOOGLE_CLIENT_ID=&quot;seu_client_id.apps.googleusercontent.com&quot;<br />
+                  GOOGLE_CLIENT_SECRET=&quot;seu_client_secret&quot;
+                </div>
+                <p className="text-[10px] text-slate-400">
+                  URI de redirecionamento autorizada na Google Cloud Console:<br />
+                  <span className="text-white font-mono select-all">http://localhost:3000/api/auth/callback/google</span>
+                </p>
+                <div className="pt-1 text-[11px] text-amber-300 font-semibold border-t border-amber-500/20">
+                  Entretanto, pode criar conta em modo de teste rápido abaixo:
+                </div>
+              </div>
+            )}
 
             {erroGoogle && (
               <div className="mb-4 flex items-center gap-2 rounded-[10px] border border-rose-500/40 bg-rose-950/60 p-3 text-xs text-rose-200">

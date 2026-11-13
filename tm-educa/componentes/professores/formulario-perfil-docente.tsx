@@ -283,7 +283,7 @@ export function FormularioPerfilDocente({
               Disciplinas Curriculares que Leciona
             </label>
             <p className="text-xs text-slate-500 mt-0.5 font-normal">
-              Selecione as disciplinas em que está habilitado para receber propostas de acompanhamento (matching pedagógico):
+              Selecione as disciplinas em que está habilitado para receber propostas de acompanhamento (atribuição pedagógica):
             </p>
           </div>
 

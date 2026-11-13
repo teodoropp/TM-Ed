@@ -15,6 +15,8 @@ export type NomeIconePais =
   | "avaliacoes"
   | "pagamentos"
   | "precos"
+  | "contratos"
+  | "documentos"
   | "ocorrencias"
   | "perfil";
 
@@ -82,11 +84,11 @@ export const GRUPOS_NAVEGACAO_PAIS: GrupoNavegacaoPais[] = [
     ],
   },
   {
-    rotulo: "Contas",
+    rotulo: "Contas & Faturação",
     itens: [
       {
-        rotulo: "Pagamentos",
-        descricao: "Faturas e mensalidades",
+        rotulo: "Pagamentos & Faturas",
+        descricao: "Faturas e comprovativos",
         href: "/portal-encarregado/pagamentos",
         icone: "pagamentos",
         contador: "pagamentos",
@@ -96,6 +98,23 @@ export const GRUPOS_NAVEGACAO_PAIS: GrupoNavegacaoPais[] = [
         descricao: "Tabela e simulador",
         href: "/portal-encarregado/precos",
         icone: "precos",
+      },
+    ],
+  },
+  {
+    rotulo: "Documentação Legal",
+    itens: [
+      {
+        rotulo: "Contrato de Serviços",
+        descricao: "Assinatura e 12 cláusulas",
+        href: "/portal-encarregado/contratos",
+        icone: "contratos",
+      },
+      {
+        rotulo: "Os Meus Documentos",
+        descricao: "Contratos e BIs anexados",
+        href: "/portal-encarregado/documentos",
+        icone: "documentos",
       },
     ],
   },

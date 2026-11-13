@@ -97,7 +97,7 @@ export default function PaginaProfessores() {
             Reputação e Reconhecimento
           </h3>
           <p className="text-xs text-slate-500 leading-relaxed">
-            Construa o seu perfil oficial com avaliações de 5 estrelas e testemunhos das famílias, aumentando a sua procura e prioridade de matching para novos alunos.
+            Construa o seu perfil oficial com avaliações de 5 estrelas e testemunhos das famílias, aumentando a sua procura e prioridade de atribuição para novos alunos.
           </p>
         </div>
       </div>

@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Calculator,
   LayoutDashboard,
+  Pencil,
 } from "lucide-react";
 
 import { obterUtilizadorAutenticado } from "@/modulos/autenticacao/consultas";
@@ -216,7 +217,7 @@ export default async function PaginaPortalEncarregado() {
 
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
-                  Olá, {utilizador.nomeCompleto.split(" ")[0]}!
+                  Olá, Sr.(a) {utilizador.nomeCompleto.split(" ")[0]}!
                 </h2>
                 <p className="mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-slate-300/90 font-normal">
                   Seja bem-vindo ao seu portal. Aceda rapidamente aos pedidos de explicação, avaliações pedagógicas e gestão financeira.
@@ -400,7 +401,7 @@ export default async function PaginaPortalEncarregado() {
             <div>
               <h2 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-amber-500" />
-                A Preceder o Sr(a). Pai
+                A Preceder o(a) Sr.(a) {utilizador.nomeCompleto.split(" ")[0]}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Ações pendentes sob a sua responsabilidade
@@ -533,11 +534,99 @@ export default async function PaginaPortalEncarregado() {
                 Adicionar Filho
               </Link>
             </div>
+          ) : alunos.length > 4 ? (
+            /* Mais de 4 filhos: Apresentação em Lista Compacta conforme solicitado */
+            <div className="mt-4 divide-y divide-slate-100 dark:divide-slate-800 rounded-xl border border-slate-200/70 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40">
+              {alunos.map((aluno) => {
+                const acompAtivo = acompanhamentos.find(
+                  (a) => a.alunoId === aluno.id && a.estado === "Activo"
+                );
+                const temExplicador = !!acompAtivo;
+                const detalheExplicador = acompAtivo
+                  ? `Prof. ${acompAtivo.professor?.utilizador.nomeCompleto.split(" ")[0]} · ${acompAtivo.disciplina.nome}`
+                  : null;
+
+                return (
+                  <div
+                    key={aluno.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 hover:bg-white dark:hover:bg-slate-800/60 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FF2D75]/10 text-[#FF2D75]">
+                        <GraduationCap className="h-4.5 w-4.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                            {aluno.nomeCompleto}
+                          </p>
+                          <Badge variante="info" className="text-[10px] py-0 px-2">
+                            {aluno.anoEscolar}
+                          </Badge>
+                          {temExplicador && (
+                            <Badge variante="sucesso" className="text-[10px] py-0 px-2 gap-1">
+                              <CheckCircle2 className="w-2.5 h-2.5" />
+                              {detalheExplicador || "Explicador Ativo"}
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-500 truncate">
+                          {aluno.escola || "Escola não especificada"} · {aluno.sistemaEnsino}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      <Link href={`/portal-encarregado/alunos/${aluno.id}`}>
+                        <Botao variante="fantasma" tamanho="sm" className="h-8 px-2.5 text-xs">
+                          <Pencil className="h-3 w-3 mr-1" />
+                          Editar
+                        </Botao>
+                      </Link>
+
+                      {temExplicador ? (
+                        <Link href="/portal-encarregado/acompanhamentos">
+                          <Botao
+                            variante="contorno"
+                            tamanho="sm"
+                            className="h-8 px-3 text-xs border-emerald-500/40 text-emerald-700 dark:text-emerald-400 bg-emerald-50/60 dark:bg-emerald-950/30"
+                          >
+                            <CheckCircle2 className="h-3 w-3 mr-1 text-emerald-600" />
+                            Apoio Ativo
+                          </Botao>
+                        </Link>
+                      ) : (
+                        <Link href={`/portal-encarregado/pedidos/novo?alunoId=${aluno.id}`}>
+                          <Botao tamanho="sm" className="h-8 px-3 text-xs bg-[#FF2D75] hover:bg-[#E11D48] text-white">
+                            Solicitar Apoio →
+                          </Botao>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
+            /* Até 4 filhos: Apresentação em Grelha de Cartões */
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {alunos.slice(0, 4).map((aluno) => (
-                <CartaoAluno key={aluno.id} aluno={aluno} />
-              ))}
+              {alunos.map((aluno) => {
+                const acompAtivo = acompanhamentos.find(
+                  (a) => a.alunoId === aluno.id && a.estado === "Activo"
+                );
+                return (
+                  <CartaoAluno
+                    key={aluno.id}
+                    aluno={aluno}
+                    temExplicador={!!acompAtivo}
+                    detalheExplicador={
+                      acompAtivo
+                        ? `Prof. ${acompAtivo.professor?.utilizador.nomeCompleto.split(" ")[0]} · ${acompAtivo.disciplina.nome}`
+                        : null
+                    }
+                  />
+                );
+              })}
             </div>
           )}
         </Cartao>

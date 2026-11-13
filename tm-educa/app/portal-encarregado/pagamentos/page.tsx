@@ -5,6 +5,7 @@ import { obterUtilizadorAutenticado } from "@/modulos/autenticacao/consultas";
 import { obterCobrancasEncarregado } from "@/modulos/financeiro/consultas";
 import { CONTAS_BANCARIAS_TM_EDUCA } from "@/regras/calculo-financeiro";
 import { ModalSubmeterComprovativo } from "@/componentes/financeiro/ModalSubmeterComprovativo";
+import { ModalFaturaOficialPDF } from "@/componentes/financeiro/ModalFaturaOficialPDF";
 import { Cartao, CartaoConteudo } from "@/componentes/ui/cartao";
 import { Badge } from "@/componentes/ui/badge";
 import { CabecalhoPaginaPais } from "@/componentes/encarregados/CabecalhoPaginaPais";
@@ -40,7 +41,8 @@ export default async function PaginaPagamentosEncarregado() {
     redirect("/entrar?callbackUrl=/portal-encarregado/pagamentos");
   }
 
-  const cobrancas = await obterCobrancasEncarregado(utilizador.perfilEncarregado.id);
+  const perfilEncarregado = utilizador.perfilEncarregado;
+  const cobrancas = await obterCobrancasEncarregado(perfilEncarregado.id);
 
   const totalPendente = cobrancas
     .filter((c) => c.estado === "Pendente" || c.estado === "EmAnalise")
@@ -124,9 +126,14 @@ export default async function PaginaPagamentosEncarregado() {
                 {conta.banco}
               </p>
               <p className="mt-1.5 select-all break-all font-mono text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white/80 dark:bg-slate-900/60 p-2 rounded-lg border border-slate-200/60 dark:border-slate-800">
-                {conta.iban}
+                IBAN: {conta.iban}
               </p>
-              <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+              {conta.numeroConta && (
+                <p className="mt-1 font-mono text-xs text-slate-600 dark:text-slate-400">
+                  N.º Conta: <span className="font-semibold select-all text-slate-800 dark:text-slate-200">{conta.numeroConta}</span>
+                </p>
+              )}
+              <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
                 Titular: <span className="font-medium text-slate-700 dark:text-slate-300">{conta.titular}</span>
               </p>
             </div>
@@ -172,10 +179,23 @@ export default async function PaginaPagamentosEncarregado() {
                         )}
                       </div>
 
-                      <div className="flex shrink-0 items-center gap-4">
-                        <p className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      <div className="flex shrink-0 items-center gap-2 sm:gap-3 flex-wrap justify-end">
+                        <p className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mr-2">
                           {cobranca.valorKz.toLocaleString("pt-PT")} Kz
                         </p>
+
+                        <ModalFaturaOficialPDF
+                          cobrancaId={cobranca.id}
+                          numeroFatura={cobranca.numeroFatura}
+                          clienteNome={utilizador.nomeCompleto}
+                          clienteBi={perfilEncarregado.nif}
+                          alunoNome={primeiroAcomp?.aluno.nomeCompleto}
+                          disciplinaNome={primeiroAcomp?.disciplina.nome}
+                          mesReferencia={cobranca.mesReferencia}
+                          valorKz={cobranca.valorKz}
+                          estado={cobranca.estado}
+                          dataVencimento={cobranca.dataVencimento}
+                        />
 
                         {cobranca.estado === "Pendente" || cobranca.estado === "Falhado" ? (
                           <ModalSubmeterComprovativo
@@ -237,10 +257,25 @@ export default async function PaginaPagamentosEncarregado() {
                       </p>
                     </div>
 
-                    <div className="flex shrink-0 items-center gap-4">
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    <div className="flex shrink-0 items-center gap-2 sm:gap-3 flex-wrap justify-end">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white mr-1">
                         {cobranca.valorKz.toLocaleString("pt-PT")} Kz
                       </p>
+
+                      <ModalFaturaOficialPDF
+                        cobrancaId={cobranca.id}
+                        numeroFatura={cobranca.numeroFatura}
+                        clienteNome={utilizador.nomeCompleto}
+                        clienteBi={perfilEncarregado.nif}
+                        alunoNome={primeiroAcomp?.aluno.nomeCompleto}
+                        disciplinaNome={primeiroAcomp?.disciplina.nome}
+                        mesReferencia={cobranca.mesReferencia}
+                        valorKz={cobranca.valorKz}
+                        estado={cobranca.estado}
+                        dataPagamento={cobranca.dataPagamento}
+                        referenciaBancaria={cobranca.referenciaBancaria}
+                      />
+
                       <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-0.5 rounded-full">
                         {cobranca.dataPagamento
                           ? `Pago a ${new Date(cobranca.dataPagamento).toLocaleDateString("pt-PT")}`

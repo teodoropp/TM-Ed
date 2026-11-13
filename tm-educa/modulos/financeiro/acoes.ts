@@ -75,6 +75,7 @@ export async function acaoSubmeterComprovativoPagamento(dados: {
   cobrancaId: string;
   referenciaBancaria: string;
   bancoOrigem: string;
+  comprovativoUrl?: string;
   observacoes?: string;
 }): Promise<RespostaAcaoFinanceira> {
   const sessao = await obterSessao();
@@ -113,6 +114,7 @@ export async function acaoSubmeterComprovativoPagamento(dados: {
       estado: "EmAnalise",
       referenciaBancaria: dados.referenciaBancaria.trim(),
       bancoOrigem: dados.bancoOrigem.trim(),
+      comprovativoUrl: dados.comprovativoUrl || null,
       observacoes: dados.observacoes || null,
       dataPagamento: new Date(),
     },

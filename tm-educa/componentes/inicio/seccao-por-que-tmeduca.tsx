@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Check, X } from "lucide-react";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 
 /**
  * Secção 6: Por que a TM-Educa
@@ -55,69 +56,73 @@ export function SeccaoPorQueTmEduca() {
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* CABEÇALHO DA SECÇÃO */}
-        <div className="max-w-4xl mb-12 sm:mb-16 space-y-3.5">
-          <div className="flex items-center gap-2.5">
-            <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-            <span className="text-xs sm:text-sm uppercase tracking-wider text-[#FF2D75] font-semibold">
-              POR QUE A TM-EDUCA
-            </span>
+        <RevelarAoRolar animacao="fade-up" duracaoMs={700}>
+          <div className="max-w-4xl mb-12 sm:mb-16 space-y-3.5">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+              <span className="text-xs sm:text-sm uppercase tracking-wider text-[#FF2D75] font-semibold">
+                POR QUE A TM-EDUCA
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+              A segurança da sua família e o sucesso do seu filho{" "}
+              <span className="text-[#FF2D75]">não dependem da sorte</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+              Compare a tranquilidade de uma instituição estruturada com o risco de explicações particulares informais sem garantias.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-            A segurança da sua família e o sucesso do seu filho{" "}
-            <span className="text-[#FF2D75]">não dependem da sorte</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
-            Compare a tranquilidade de uma instituição estruturada com o risco de explicações particulares informais sem garantias.
-          </p>
-        </div>
+        </RevelarAoRolar>
 
-        {/* TABELA COMPARATIVA DE TAMANHO MÉDIO (MAX-W-5XL) COM BORDAS DE 5PX */}
-        <div className="w-full max-w-5xl mx-auto overflow-hidden rounded-[5px] border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-[#07182E]">
-          {/* CABEÇALHO DA TABELA (FUNDO BRANCO/CLARO LIMPO) */}
-          <div className="grid grid-cols-1 md:grid-cols-12 border-b-2 border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-[#0c223d] py-4 px-5 sm:px-7 items-center gap-2">
-            <div className="md:col-span-5 text-xs sm:text-sm font-bold text-[#0A192F] dark:text-white uppercase tracking-wider">
-              Critério de Avaliação
+        {/* TABELA COMPARATIVA COM ENTRADA FLUIDA E HOVER INTERATIVO */}
+        <RevelarAoRolar animacao="fade-up" atrasoMs={200} duracaoMs={800}>
+          <div className="w-full max-w-5xl mx-auto overflow-hidden rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl transition-shadow duration-300 bg-white dark:bg-[#07182E]">
+            {/* CABEÇALHO DA TABELA */}
+            <div className="grid grid-cols-1 md:grid-cols-12 border-b-2 border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-[#0c223d] py-4 px-5 sm:px-7 items-center gap-2">
+              <div className="md:col-span-5 text-xs sm:text-sm font-bold text-[#0A192F] dark:text-white uppercase tracking-wider">
+                Critério de Avaliação
+              </div>
+              <div className="md:col-span-4 text-left md:text-center text-xs sm:text-sm font-bold text-[#FF2D75] uppercase tracking-wider flex items-center md:justify-center gap-1.5">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#FF2D75] animate-ping" />
+                TM-Educa Oficial
+              </div>
+              <div className="md:col-span-3 text-left md:text-center text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Explicador Informal
+              </div>
             </div>
-            <div className="md:col-span-4 text-left md:text-center text-xs sm:text-sm font-bold text-[#FF2D75] uppercase tracking-wider flex items-center md:justify-center gap-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#FF2D75]" />
-              TM-Educa Oficial
-            </div>
-            <div className="md:col-span-3 text-left md:text-center text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-              Explicador Informal
-            </div>
+
+            {/* LINHAS DA TABELA COM HOVER FLUIDO */}
+            {comparativos.map((item, idx) => (
+              <div
+                key={idx}
+                className={`grid grid-cols-1 md:grid-cols-12 py-4 sm:py-4.5 px-5 sm:px-7 border-b border-slate-200/80 dark:border-slate-800 items-center gap-3 transition-all duration-200 hover:bg-slate-50/90 dark:hover:bg-[#102A45]/40 hover:pl-6 sm:hover:pl-8 ${
+                  idx === comparativos.length - 1 ? "border-b-0" : ""
+                }`}
+              >
+                {/* COLUNA DO CRITÉRIO */}
+                <div className="md:col-span-5 text-sm sm:text-base font-normal text-[#0A192F] dark:text-white leading-snug">
+                  {item.criterio}
+                </div>
+
+                {/* COLUNA TM-EDUCA */}
+                <div className="md:col-span-4 font-normal text-slate-800 dark:text-slate-100 flex items-start md:items-center md:justify-center gap-2.5 text-xs sm:text-sm">
+                  <div className="w-5 h-5 rounded-[5px] bg-[#FFF0F5] dark:bg-[#FF2D75]/20 border border-[#FF2D75]/30 flex items-center justify-center shrink-0 mt-0.5 md:mt-0 transition-transform duration-200 hover:scale-110">
+                    <Check className="w-3.5 h-3.5 text-[#FF2D75] stroke-[2.5]" />
+                  </div>
+                  <span className="leading-relaxed font-normal">{item.tmeduca}</span>
+                </div>
+
+                {/* COLUNA EXPLICADOR INFORMAL */}
+                <div className="md:col-span-3 text-slate-500 dark:text-slate-400 flex items-start md:items-center md:justify-center gap-2.5 text-xs sm:text-sm font-normal">
+                  <div className="w-5 h-5 rounded-[5px] bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0 mt-0.5 md:mt-0">
+                    <X className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 stroke-[2.5]" />
+                  </div>
+                  <span className="leading-relaxed">{item.informal}</span>
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* LINHAS DA TABELA (EQUILIBRADAS EM TAMANHO MÉDIO) */}
-          {comparativos.map((item, idx) => (
-            <div
-              key={idx}
-              className={`grid grid-cols-1 md:grid-cols-12 py-4 sm:py-4.5 px-5 sm:px-7 border-b border-slate-200/80 dark:border-slate-800 items-center gap-3 transition-colors hover:bg-slate-50/60 dark:hover:bg-[#102A45]/30 ${
-                idx === comparativos.length - 1 ? "border-b-0" : ""
-              }`}
-            >
-              {/* COLUNA DO CRITÉRIO */}
-              <div className="md:col-span-5 text-sm sm:text-base font-normal text-[#0A192F] dark:text-white leading-snug">
-                {item.criterio}
-              </div>
-
-              {/* COLUNA TM-EDUCA */}
-              <div className="md:col-span-4 font-normal text-slate-800 dark:text-slate-100 flex items-start md:items-center md:justify-center gap-2.5 text-xs sm:text-sm">
-                <div className="w-5 h-5 rounded-[5px] bg-[#FFF0F5] dark:bg-[#FF2D75]/20 border border-[#FF2D75]/20 flex items-center justify-center shrink-0 mt-0.5 md:mt-0">
-                  <Check className="w-3.5 h-3.5 text-[#FF2D75] stroke-[2.5]" />
-                </div>
-                <span className="leading-relaxed font-normal">{item.tmeduca}</span>
-              </div>
-
-              {/* COLUNA EXPLICADOR INFORMAL */}
-              <div className="md:col-span-3 text-slate-500 dark:text-slate-400 flex items-start md:items-center md:justify-center gap-2.5 text-xs sm:text-sm font-normal">
-                <div className="w-5 h-5 rounded-[5px] bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0 mt-0.5 md:mt-0">
-                  <X className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 stroke-[2.5]" />
-                </div>
-                <span className="leading-relaxed">{item.informal}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        </RevelarAoRolar>
       </div>
     </section>
   );

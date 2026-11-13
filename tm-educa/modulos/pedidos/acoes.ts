@@ -296,7 +296,7 @@ export async function acaoEnviarPropostaMatching(
           estadoAnterior: pedido.estado,
           novoEstado: EstadoPedido.AAguardarConfirmacao,
           alteradoPorId: sessao.utilizadorId,
-          motivo: `Proposta de matching formal submetida ao explicador com ${pontuacaoMatching}% de compatibilidade.`,
+          motivo: `Proposta de atribuição formal submetida ao explicador com ${pontuacaoMatching}% de compatibilidade.`,
         },
       });
     });
@@ -306,8 +306,8 @@ export async function acaoEnviarPropostaMatching(
 
     return { sucesso: true, mensagem: "Proposta enviada ao professor com sucesso!" };
   } catch (erro) {
-    console.error("Erro ao submeter proposta de matching:", erro);
-    return { sucesso: false, mensagem: "Erro ao enviar a proposta de matching." };
+    console.error("Erro ao submeter proposta de atribuição:", erro);
+    return { sucesso: false, mensagem: "Erro ao enviar a proposta de atribuição." };
   }
 }
 

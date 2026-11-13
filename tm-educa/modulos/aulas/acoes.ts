@@ -412,3 +412,56 @@ export async function acaoSubstituirProfessorAcompanhamento(dados: {
     mensagem: `Professor titular substituído com sucesso por ${novoProf.utilizador.nomeCompleto}. O contrato da família e o histórico pedagógico mantêm-se intactos.`,
   };
 }
+
+/**
+ * Permite ao encarregado de educação validar que uma aula foi efectivamente dada,
+ * mesmo que o professor não tenha atualizado o sumário no próprio dia.
+ */
+export async function acaoConfirmarAulaRealizadaPeloPai(aulaId: string): Promise<{
+  sucesso: boolean;
+  mensagem: string;
+}> {
+  const sessao = await obterSessao();
+  if (!sessao || sessao.funcao !== "ENCARREGADO") {
+    return { sucesso: false, mensagem: "Acesso restrito ao encarregado de educação." };
+  }
+
+  const aula = await baseDados.aula.findUnique({
+    where: { id: aulaId },
+    include: {
+      acompanhamento: {
+        include: { encarregado: true },
+      },
+    },
+  });
+
+  if (!aula) {
+    return { sucesso: false, mensagem: "Aula não encontrada no sistema." };
+  }
+
+  if (aula.acompanhamento.encarregado.utilizadorId !== sessao.utilizadorId) {
+    return { sucesso: false, mensagem: "Não tem permissão para validar esta aula." };
+  }
+
+  await baseDados.aula.update({
+    where: { id: aulaId },
+    data: {
+      estado: "Realizada",
+      remuneracaoPagaKz: aula.acompanhamento.remuneracaoPorAulaKz,
+      observacoesPedagogicas: aula.observacoesPedagogicas
+        ? `${aula.observacoesPedagogicas} | Confirmada como Realizada pelo Encarregado de Educação.`
+        : "Confirmada como Realizada pelo Encarregado de Educação.",
+    },
+  });
+
+  revalidatePath("/portal-encarregado/acompanhamentos");
+  revalidatePath(`/portal-encarregado/acompanhamentos/${aula.acompanhamentoId}`);
+  revalidatePath(`/portal-encarregado/aulas/${aulaId}`);
+  revalidatePath("/administracao/aulas");
+  revalidatePath("/portal-professor/agenda");
+
+  return {
+    sucesso: true,
+    mensagem: "Aula validada e confirmada como realizada com sucesso!",
+  };
+}

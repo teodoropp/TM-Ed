@@ -27,7 +27,7 @@ export default async function PaginaAdminAlunos() {
 
       <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full min-w-[620px] text-left text-sm">
             <thead className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs uppercase font-semibold text-slate-500">
               <tr>
                 <th className="p-4">Aluno</th>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Cartao, CartaoCabecalho, CartaoTitulo, CartaoConteudo, CartaoRodape } from "@/componentes/ui/cartao";
 import { Badge } from "@/componentes/ui/badge";
 import { Botao } from "@/componentes/ui/botao";
-import { GraduationCap, School, BookOpen, AlertCircle, Target, ArrowRight, Pencil } from "lucide-react";
+import { GraduationCap, School, BookOpen, AlertCircle, Target, ArrowRight, Pencil, CheckCircle2, UserCheck } from "lucide-react";
 
 export interface PropriedadesCartaoAluno {
   aluno: {
@@ -14,9 +14,11 @@ export interface PropriedadesCartaoAluno {
     dificuldades: string | null;
     objectivos: string | null;
   };
+  temExplicador?: boolean;
+  detalheExplicador?: string | null;
 }
 
-export function CartaoAluno({ aluno }: PropriedadesCartaoAluno) {
+export function CartaoAluno({ aluno, temExplicador = false, detalheExplicador }: PropriedadesCartaoAluno) {
   return (
     <Cartao className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white/90 backdrop-blur-sm shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#FF2D75]/40 hover:shadow-lg dark:border-slate-800/80 dark:bg-slate-900/90">
       <CartaoCabecalho className="space-y-3 p-5 pb-3">
@@ -52,6 +54,15 @@ export function CartaoAluno({ aluno }: PropriedadesCartaoAluno) {
           </span>
         </div>
 
+        {temExplicador && (
+          <div className="flex items-center gap-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 p-2 text-emerald-800 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-900/40 text-[11px] font-medium">
+            <UserCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+            <span className="truncate">
+              {detalheExplicador || "Acompanhamento ativo com explicador"}
+            </span>
+          </div>
+        )}
+
         {aluno.dificuldades && (
           <div className="flex items-start gap-2 rounded-xl bg-amber-50/80 p-2.5 text-amber-900 dark:bg-amber-950/30 dark:text-amber-200 border border-amber-100 dark:border-amber-900/40">
             <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
@@ -78,11 +89,25 @@ export function CartaoAluno({ aluno }: PropriedadesCartaoAluno) {
             Editar
           </Botao>
         </Link>
-        <Link href={`/portal-encarregado/pedidos/novo`}>
-          <Botao tamanho="sm" className="gap-1.5 text-xs rounded-xl shadow-sm transition-all hover:scale-102">
-            Solicitar Apoio <ArrowRight className="h-3 w-3" />
-          </Botao>
-        </Link>
+
+        {temExplicador ? (
+          <Link href="/portal-encarregado/acompanhamentos">
+            <Botao
+              variante="contorno"
+              tamanho="sm"
+              className="gap-1.5 text-xs rounded-xl border-emerald-500/40 text-emerald-700 dark:text-emerald-400 bg-emerald-50/60 dark:bg-emerald-950/30 hover:bg-emerald-100 transition-all"
+            >
+              <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+              Apoio Ativo
+            </Botao>
+          </Link>
+        ) : (
+          <Link href={`/portal-encarregado/pedidos/novo?alunoId=${aluno.id}`}>
+            <Botao tamanho="sm" className="gap-1.5 text-xs rounded-xl shadow-sm transition-all hover:scale-102 bg-[#FF2D75] hover:bg-[#E11D48] text-white">
+              Solicitar Apoio <ArrowRight className="h-3 w-3" />
+            </Botao>
+          </Link>
+        )}
       </CartaoRodape>
     </Cartao>
   );

@@ -74,7 +74,7 @@ export default async function PaginaAdminRemuneracoes() {
 
             <CartaoConteudo className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full min-w-[580px] text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/30 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                       <th className="py-3 px-5">Ano Escolar</th>

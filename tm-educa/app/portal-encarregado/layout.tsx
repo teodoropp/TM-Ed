@@ -5,6 +5,8 @@ import { ShellPortalPais } from "@/componentes/encarregados/ShellPortalPais";
 import { obterUtilizadorAutenticado } from "@/modulos/autenticacao/consultas";
 import { obterCobrancasEncarregado } from "@/modulos/financeiro/consultas";
 import { obterAcompanhamentosParaAvaliar } from "@/modulos/qualidade/consultas";
+import { obterEstadoContratualEncarregado } from "@/modulos/contratos/consultas";
+import { BannerAlertaContratoPais } from "@/componentes/encarregados/BannerAlertaContratoPais";
 import { acaoTerminarSessao } from "@/modulos/autenticacao/acoes";
 
 export const metadata: Metadata = {
@@ -32,10 +34,11 @@ export default async function LayoutPortalEncarregado({
 
   const perfilId = utilizador.perfilEncarregado.id;
 
-  /* Contadores de pendências exibidos no menu lateral. */
-  const [cobrancas, acompanhamentos] = await Promise.all([
+  /* Contadores de pendências exibidos no menu lateral e estado contratual. */
+  const [cobrancas, acompanhamentos, estadoContrato] = await Promise.all([
     obterCobrancasEncarregado(perfilId),
     obterAcompanhamentosParaAvaliar(perfilId),
+    obterEstadoContratualEncarregado(),
   ]);
 
   const contadores = {
@@ -52,6 +55,13 @@ export default async function LayoutPortalEncarregado({
       contadores={contadores}
       aoTerminarSessao={acaoTerminarSessao}
     >
+      {estadoContrato && (
+        <BannerAlertaContratoPais
+          assinadoPeloPai={estadoContrato.assinadoPeloPai}
+          diasRestantes={estadoContrato.diasRestantes}
+          prazoExpirado={estadoContrato.prazoExpirado}
+        />
+      )}
       {children}
     </ShellPortalPais>
   );

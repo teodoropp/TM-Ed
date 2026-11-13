@@ -35,17 +35,17 @@ export default async function PaginaDisponibilidadeProfessor() {
     <div className="space-y-6 portal-tipografia">
       <CabecalhoPaginaProfessor
         titulo="Disponibilidade Horária"
-        descricao="Defina os dias da semana e intervalos horários em que está disponível para lecionar. O sistema de matching usa esta grelha para lhe propor novos alunos compatíveis."
+        descricao="Defina os dias da semana e intervalos horários em que está disponível para lecionar. O sistema de atribuição pedagógica usa esta grelha para lhe propor novos alunos compatíveis."
         icone={Clock}
       />
 
-      {/* Cartão de Dicas de Matching */}
+      {/* Cartão de Dicas de Atribuição */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Cartao className="rounded-[5px] border-slate-200 dark:border-slate-800 bg-white dark:bg-[#07182E] shadow-sm">
           <CartaoConteudo className="p-4 space-y-2">
             <div className="flex items-center gap-2 text-rose-500 text-xs font-normal">
               <Sparkles className="h-4 w-4" />
-              <span>Prioridade no Matching</span>
+              <span>Prioridade na Atribuição</span>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400">
               Professores com mais janelas horárias ativas recebem até 3x mais propostas automáticas dos encarregados.

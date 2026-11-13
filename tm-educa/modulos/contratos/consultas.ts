@@ -1,5 +1,6 @@
 import { baseDados } from "@/servicos/base-dados";
 import { obterSessao } from "@/modulos/autenticacao/sessao";
+import { TipoContrato } from "@prisma/client";
 
 /**
  * Consulta todos os contratos registados no sistema para supervisão da administração.
@@ -23,6 +24,103 @@ export async function obterTodosContratosAdmin() {
       },
     },
   });
+}
+
+export interface EstadoContratualEncarregado {
+  temContrato: boolean;
+  contratoId?: string;
+  numeroContrato?: string;
+  assinadoPeloPai: boolean;
+  assinadoPeloAdmin: boolean;
+  dataAssinaturaPai?: Date | null;
+  dataAssinaturaAdmin?: Date | null;
+  biNumero?: string | null;
+  biAnexoUrl?: string | null;
+  biAdminAnexoUrl?: string | null;
+  prazoLimiteAssinatura: Date;
+  diasRestantes: number;
+  prazoExpirado: boolean;
+  alunoNome?: string;
+  alunoClasse?: string;
+  alunoIdade?: string;
+  alunoId?: string;
+}
+
+/**
+ * Obtém o estado contratual e os dados para formalização do contrato do pai autenticado.
+ * Calcula o prazo de 7 dias com base na data de criação da conta ou do primeiro pedido.
+ */
+export async function obterEstadoContratualEncarregado(): Promise<EstadoContratualEncarregado | null> {
+  const sessao = await obterSessao();
+  if (!sessao || sessao.funcao !== "ENCARREGADO") {
+    return null;
+  }
+
+  const utilizador = await baseDados.utilizador.findUnique({
+    where: { id: sessao.utilizadorId },
+    include: {
+      perfilEncarregado: {
+        include: {
+          alunos: {
+            where: { activo: true },
+            orderBy: { criadoEm: "asc" },
+          },
+          pedidos: {
+            orderBy: { criadoEm: "asc" },
+            include: {
+              aluno: true,
+              disciplina: true,
+              anoEscolar: true,
+            },
+          },
+        },
+      },
+      contratos: {
+        where: { tipo: TipoContrato.Cliente },
+        orderBy: { criadoEm: "desc" },
+        take: 1,
+      },
+    },
+  });
+
+  if (!utilizador || !utilizador.perfilEncarregado) {
+    return null;
+  }
+
+  const primeiroAluno = utilizador.perfilEncarregado.alunos[0];
+  const primeiroPedido = utilizador.perfilEncarregado.pedidos[0];
+  const contratoExistente = utilizador.contratos[0];
+
+  // Cálculo da data base e do prazo de 7 dias
+  const dataBase = utilizador.criadoEm;
+  const prazoLimite = contratoExistente?.prazoLimiteAssinatura
+    ? new Date(contratoExistente.prazoLimiteAssinatura)
+    : new Date(dataBase.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+  const agora = new Date();
+  const diferencaMs = prazoLimite.getTime() - agora.getTime();
+  const diasRestantes = Math.max(0, Math.ceil(diferencaMs / (1000 * 60 * 60 * 24)));
+  const prazoExpirado = diferencaMs < 0;
+
+  return {
+    temContrato: Boolean(contratoExistente),
+    contratoId: contratoExistente?.id,
+    numeroContrato: contratoExistente?.numeroContrato,
+    assinadoPeloPai: Boolean(contratoExistente?.assinadoPorUtilizador),
+    assinadoPeloAdmin: Boolean(contratoExistente?.assinadoPorAdmin),
+    dataAssinaturaPai: contratoExistente?.dataAssinaturaUtilizador,
+    dataAssinaturaAdmin: contratoExistente?.dataAssinaturaAdmin,
+    biNumero: contratoExistente?.biNumero || utilizador.perfilEncarregado.nif,
+    biAnexoUrl: contratoExistente?.biAnexoUrl,
+    biAdminAnexoUrl: contratoExistente?.biAdminAnexoUrl,
+    prazoLimiteAssinatura: prazoLimite,
+    diasRestantes,
+    prazoExpirado,
+    alunoNome: contratoExistente?.alunoNome || primeiroAluno?.nomeCompleto || primeiroPedido?.aluno?.nomeCompleto || "",
+    alunoClasse: contratoExistente?.alunoClasseAno || primeiroAluno?.anoEscolar || primeiroPedido?.anoEscolar?.nome || "",
+    alunoIdade: contratoExistente?.alunoIdade || "",
+    alunoId: primeiroAluno?.id || primeiroPedido?.alunoId,
+  };
 }
 
 /**
@@ -84,7 +182,6 @@ export async function obterAcompanhamentoPorId(id: string) {
 
   if (!acompanhamento) return null;
 
-  // Verificação de permissões
   if (sessao.funcao === "ENCARREGADO") {
     const perfil = await baseDados.perfilEncarregado.findUnique({
       where: { utilizadorId: sessao.utilizadorId },

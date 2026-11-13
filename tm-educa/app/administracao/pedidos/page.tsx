@@ -44,7 +44,7 @@ export default async function PaginaAdminPedidos({ searchParams }: PropsPaginaAd
     <AmbienteAdmin>
       {/* Cabeçalho */}
       <CabecalhoPagina
-        titulo="Triagem e Matching de Pedidos"
+        titulo="Triagem e Atribuição de Pedidos"
         descricao="Gestão operacional dos pedidos recebidos, motor de recomendação pedagógica e atribuição de explicadores."
         caminho={[
           { rotulo: "Administração", href: "/administracao" },
@@ -115,7 +115,7 @@ export default async function PaginaAdminPedidos({ searchParams }: PropsPaginaAd
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full min-w-[680px] text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/30 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     <th className="py-3 px-5">Aluno & Pais</th>
@@ -174,7 +174,7 @@ export default async function PaginaAdminPedidos({ searchParams }: PropsPaginaAd
                         <td className="py-4 px-5 text-right">
                           <Link href={`/administracao/pedidos/${ped.id}`}>
                             <Botao variante="contorno" tamanho="sm" className="gap-1.5 text-xs">
-                              Triagem & Matching
+                              Triagem & Atribuição
                               <ArrowRight className="w-3.5 h-3.5" />
                             </Botao>
                           </Link>

@@ -39,7 +39,7 @@ export function PainelMatchingAdmin({
   const detalheEstado = obterDetalheEstadoPedido(estadoAtual);
 
   async function handleEnviarProposta(professorId: string, pontuacao: number) {
-    if (!confirm(`Deseja enviar formalmente a proposta de matching a este professor (${pontuacao}% de compatibilidade)?`)) {
+    if (!confirm(`Deseja enviar formalmente a proposta de atribuição a este professor (${pontuacao}% de compatibilidade)?`)) {
       return;
     }
 

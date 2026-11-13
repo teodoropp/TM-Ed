@@ -123,7 +123,7 @@ export default async function PaginaFinanceiraAdmin() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+              <table className="w-full min-w-[760px] text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/60 font-semibold text-slate-600 dark:text-slate-400">
                     <th className="p-3.5">Fatura</th>
@@ -251,7 +251,7 @@ export default async function PaginaFinanceiraAdmin() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+              <table className="w-full min-w-[760px] text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/60 font-semibold text-slate-600 dark:text-slate-400">
                     <th className="p-3.5">Código da Folha</th>

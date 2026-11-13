@@ -408,7 +408,7 @@ export function VisualizadorPerfilProfessor({
                     Grelha Semanal de Disponibilidade
                   </h3>
                   <span className="text-xs text-slate-400 font-normal">
-                    Janelas horárias ativas para matching com novos alunos
+                    Janelas horárias ativas para atribuição de novos alunos
                   </span>
                 </div>
               </div>

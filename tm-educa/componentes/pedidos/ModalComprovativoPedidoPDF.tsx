@@ -481,7 +481,7 @@ export function imprimirComprovativoDireto(dados: DadosComprovativoPedido) {
 
   <div class="terms-box">
     <div class="terms-title">Garantias e Dizeres Institucionais TM-Educa</div>
-    <p>1. <strong>Sem cobrança imediata:</strong> A submissão deste pedido não exige liquidação financeira prévia. O processo de alocação e matching do explicador credenciado é iniciado sem custos.</p>
+    <p>1. <strong>Sem cobrança imediata:</strong> A submissão deste pedido não exige liquidação financeira prévia. O processo de alocação e atribuição do explicador credenciado é iniciado sem custos.</p>
     <p>2. <strong>Contacto Pedagógico:</strong> A coordenação pedagógica da TM-Educa entrará em contacto nas próximas 24 a 48 horas úteis para confirmar o perfil do explicador e agendar a primeira sessão diagnóstica.</p>
     <p>3. <strong>Qualidade Garantida:</strong> Corpo docente rigorosamente verificado, credenciado e com acompanhamento pedagógico contínuo.</p>
   </div>
@@ -773,7 +773,7 @@ export function ModalComprovativoPedidoPDF({
               Garantias e Dizeres Institucionais TM-Educa
             </p>
             <p>
-              1. <strong>Sem cobrança prévia:</strong> A submissão deste pedido não exige liquidação imediata. O processo de alocação e matching do explicador credenciado é iniciado gratuitamente.
+              1. <strong>Sem cobrança prévia:</strong> A submissão deste pedido não exige liquidação imediata. O processo de alocação e atribuição do explicador credenciado é iniciado gratuitamente.
             </p>
             <p>
               2. <strong>Contacto Pedagógico:</strong> A coordenação pedagógica da TM-Educa entrará em contacto nas próximas 24 a 48 horas úteis para confirmar o explicador e agendar a primeira sessão diagnóstica.

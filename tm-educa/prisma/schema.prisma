@@ -452,6 +452,26 @@ model Contrato {
   dataFim        DateTime?      @map("data_fim")
   termosAceites  Boolean        @default(true) @map("termos_aceites")
   estado         EstadoContrato @default(Activo)
+  
+  // Documentação Legal, Assinatura Digital e Anexos de BI
+  biNumero                 String?   @map("bi_numero")
+  biAnexoUrl               String?   @map("bi_anexo_url") @db.Text
+  morada                   String?
+  alunoNome                String?   @map("aluno_nome")
+  alunoClasseAno           String?   @map("aluno_classe_ano")
+  alunoIdade               String?   @map("aluno_idade")
+  disciplinasAcordadas     String?   @map("disciplinas_acordadas") @db.Text
+  diasHorariosAcordados    String?   @map("dias_horarios_acordados") @db.Text
+  assinadoPorUtilizador    Boolean   @default(false) @map("assinado_por_utilizador")
+  dataAssinaturaUtilizador DateTime? @map("data_assinatura_utilizador")
+  assinadoPorAdmin         Boolean   @default(false) @map("assinado_por_admin")
+  dataAssinaturaAdmin      DateTime? @map("data_assinatura_admin")
+  nomeAdminSignatario      String?   @default("Teodoro Pedro") @map("nome_admin_signatario")
+  cargoAdminSignatario     String?   @default("Diretor Geral TM-Educa") @map("cargo_admin_signatario")
+  biAdminAnexoUrl          String?   @map("bi_admin_anexo_url") @db.Text
+  prazoLimiteAssinatura    DateTime? @map("prazo_limite_assinatura")
+  documentoPdfUrl          String?   @map("documento_pdf_url") @db.Text
+
   criadoEm       DateTime       @default(now()) @map("criado_em")
   atualizadoEm   DateTime       @updatedAt @map("atualizado_em")
 

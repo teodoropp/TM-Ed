@@ -1,5 +1,6 @@
 import React from "react";
 import { Star } from "lucide-react";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 
 /**
  * Secção 8: Testemunhos
@@ -88,23 +89,25 @@ export function SeccaoTestemunhos() {
       }}
     >
       {/* CABEÇALHO DA SECÇÃO */}
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14">
-        <div className="max-w-3xl space-y-3">
-          <div className="flex items-center gap-2.5">
-            <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-            <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
-              TESTEMUNHOS REAIS
-            </span>
+      <RevelarAoRolar animacao="fade-up" duracaoMs={700}>
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14">
+          <div className="max-w-3xl space-y-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+              <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
+                TESTEMUNHOS REAIS
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+              A confiança de famílias que{" "}
+              <span className="text-[#FF2D75]">veem a evolução diária</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+              Conheça a experiência de pais que confiaram o futuro escolar dos seus filhos à metodologia da TM-Educa.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-            A confiança de famílias que{" "}
-            <span className="text-[#FF2D75]">veem a evolução diária</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-            Conheça a experiência de pais que confiaram o futuro escolar dos seus filhos à metodologia da TM-Educa.
-          </p>
         </div>
-      </div>
+      </RevelarAoRolar>
 
       {/* ÁREA DOS CARROSSEIS AUTOMÁTICOS INFINITOS (DUPLA LINHA) */}
       <div className="relative w-full overflow-hidden py-2 space-y-5">
@@ -117,7 +120,7 @@ export function SeccaoTestemunhos() {
           {[...linhaCima, ...linhaCima].map((t, idx) => (
             <div
               key={`cima-${idx}`}
-              className="w-[320px] sm:w-[380px] shrink-0 p-6 rounded-[5px] bg-white dark:bg-[#07182E] border border-slate-200/90 dark:border-slate-800 shadow-xs hover:shadow-md hover:border-[#FF2D75]/40 transition-all flex flex-col justify-between space-y-4 select-none"
+              className="w-[320px] sm:w-[380px] shrink-0 p-6 rounded-[8px] bg-white dark:bg-[#07182E] border border-slate-200/90 dark:border-slate-800 shadow-xs card-hover-lift hover:border-[#FF2D75]/50 transition-all flex flex-col justify-between space-y-4 select-none"
             >
               <div className="space-y-3">
                 {/* ESTRELAS */}
@@ -159,7 +162,7 @@ export function SeccaoTestemunhos() {
           {[...linhaBaixo, ...linhaBaixo].map((t, idx) => (
             <div
               key={`baixo-${idx}`}
-              className="w-[320px] sm:w-[380px] shrink-0 p-6 rounded-[5px] bg-white dark:bg-[#07182E] border border-slate-200/90 dark:border-slate-800 shadow-xs hover:shadow-md hover:border-[#FF2D75]/40 transition-all flex flex-col justify-between space-y-4 select-none"
+              className="w-[320px] sm:w-[380px] shrink-0 p-6 rounded-[8px] bg-white dark:bg-[#07182E] border border-slate-200/90 dark:border-slate-800 shadow-xs card-hover-lift hover:border-[#FF2D75]/50 transition-all flex flex-col justify-between space-y-4 select-none"
             >
               <div className="space-y-3">
                 {/* ESTRELAS */}

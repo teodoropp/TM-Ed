@@ -672,7 +672,7 @@ export function FormularioPedido({
               />
               <p className="text-[11px] text-slate-500">
                 Separe por vírgula. A coordenação pedagógica confirma estas
-                disciplinas antes do matching.
+                disciplinas antes da atribuição.
               </p>
             </div>
           )}
@@ -1072,7 +1072,7 @@ export function FormularioPedido({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-            <span>A submissão do pedido não obriga a pagamento imediato. O matching é iniciado sem custos.</span>
+            <span>A submissão do pedido não obriga a pagamento imediato. A atribuição de explicador é iniciada sem custos.</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">

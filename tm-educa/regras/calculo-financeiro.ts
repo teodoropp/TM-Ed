@@ -15,15 +15,15 @@ export const CONTAS_BANCARIAS_TM_EDUCA = [
     banco: "BAI — Banco Angolano de Investimentos",
     sigla: "BAI",
     titular: "TM-Educa Prestação de Serviços, Lda.",
-    iban: "AO06.0040.0000.1234.5678.9012.3",
-    numeroConta: "123456789.10.001",
+    iban: "AO06.0040.0000.9578.9097.1014.5",
+    numeroConta: "004000009578909710145",
   },
   {
     banco: "BFA — Banco de Fomento Angola",
     sigla: "BFA",
     titular: "TM-Educa Prestação de Serviços, Lda.",
-    iban: "AO06.0006.0000.9876.5432.1098.7",
-    numeroConta: "987654321.20.001",
+    iban: "AO06.0006.0000.0202.7170.3019.4",
+    numeroConta: "000600000202717030194",
   },
 ];
 

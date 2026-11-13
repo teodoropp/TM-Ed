@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { acaoCancelarAula } from "@/modulos/aulas/acoes";
+import { acaoCancelarAula, acaoConfirmarAulaRealizadaPeloPai } from "@/modulos/aulas/acoes";
 import { Botao } from "@/componentes/ui/botao";
 import { Cartao, CartaoConteudo, CartaoCabecalho, CartaoTitulo, CartaoDescricao } from "@/componentes/ui/cartao";
 import { Badge } from "@/componentes/ui/badge";
 import { EstadoAula } from "@prisma/client";
-import { BookOpen, Calendar, Clock, FileText, User, UserCheck, AlertTriangle, ArrowLeft } from "lucide-react";
+import { BookOpen, Calendar, Clock, FileText, User, UserCheck, AlertTriangle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { FormularioAgendarReposicao } from "@/componentes/aulas/FormularioAgendarReposicao";
 
@@ -91,6 +91,31 @@ export function FichaAulaPedagogica({ aula }: PropriedadesFichaPedagogica) {
     });
   };
 
+  const ePassada = fim < new Date();
+  const eNaoDada = ePassada && aula.estado === "Agendada";
+  const [pendenteConfirmacao, setPendenteConfirmacao] = useState(false);
+
+  const confirmarComoRealizadaPeloPai = async () => {
+    setPendenteConfirmacao(true);
+    setMensagemSucesso(null);
+    setMensagemErro(null);
+    try {
+      const res = await acaoConfirmarAulaRealizadaPeloPai(aula.id);
+      if (res.sucesso) {
+        setMensagemSucesso(res.mensagem);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      } else {
+        setMensagemErro(res.mensagem);
+      }
+    } catch {
+      setMensagemErro("Ocorreu um erro ao tentar validar a aula.");
+    } finally {
+      setPendenteConfirmacao(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -131,6 +156,8 @@ export function FichaAulaPedagogica({ aula }: PropriedadesFichaPedagogica) {
               variante={
                 aula.estado === "Realizada"
                   ? "sucesso"
+                  : eNaoDada
+                  ? "perigo"
                   : aula.estado === "Agendada"
                   ? "info"
                   : aula.estado === "Aluno_Ausente" || aula.estado === "Professor_Ausente"
@@ -139,7 +166,8 @@ export function FichaAulaPedagogica({ aula }: PropriedadesFichaPedagogica) {
               }
             >
               {aula.estado === "Realizada" && "✓ Realizada"}
-              {aula.estado === "Agendada" && "Próxima Sessão"}
+              {eNaoDada && "✕ Não Dada"}
+              {!eNaoDada && aula.estado === "Agendada" && "Próxima Sessão"}
               {aula.estado === "Aluno_Ausente" && "Aluno Ausente"}
               {aula.estado === "Professor_Ausente" && "Falta do Professor"}
               {aula.estado === "Cancelada" && "Cancelada"}
@@ -227,13 +255,39 @@ export function FichaAulaPedagogica({ aula }: PropriedadesFichaPedagogica) {
               )}
             </div>
           ) : (
-            /* Aula Ainda Agendada ou Cancelada */
+            /* Aula Ainda Agendada ou Não Dada */
             <div className="space-y-4">
-              {aula.estado === "Agendada" && (
+              {eNaoDada ? (
+                <div className="rounded-xl border border-rose-300 bg-rose-50/70 p-4 dark:border-rose-900/50 dark:bg-rose-950/20 space-y-3">
+                  <div className="flex items-start gap-2.5">
+                    <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-bold text-rose-900 dark:text-rose-200">
+                        Aula Não Dada (Sumário não submetido pelo professor)
+                      </h4>
+                      <p className="text-xs text-rose-800 dark:text-rose-300 mt-1 leading-relaxed">
+                        A data desta aula já decorreu e o explicador não submeteu o sumário nem o registo de presença. Conforme a regra TM-Educa, a aula é considerada <strong>Não Dada</strong>, a menos que confirme que ela foi lecionada com sucesso.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-1">
+                    <Botao
+                      type="button"
+                      variante="primario"
+                      onClick={confirmarComoRealizadaPeloPai}
+                      disabled={pendenteConfirmacao}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 text-xs font-semibold shadow-sm"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                      {pendenteConfirmacao ? "A validar..." : "Confirmar que a Aula foi Realizada"}
+                    </Botao>
+                  </div>
+                </div>
+              ) : aula.estado === "Agendada" ? (
                 <div className="rounded-xl border border-blue-200 bg-blue-50/30 p-4 text-sm text-blue-900 dark:border-blue-800 dark:bg-blue-950/20 dark:text-blue-200 leading-relaxed">
                   Esta aula está agendada no calendário regular do acompanhamento. O sumário pedagógico e trabalhos de casa ficarão disponíveis aqui logo após a conclusão da sessão.
                 </div>
-              )}
+              ) : null}
 
               {aula.observacoesPedagogicas && (
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, MessageCircle, ArrowRight } from "lucide-react";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 
 /**
  * Secção 9: Perguntas Frequentes
@@ -63,70 +64,74 @@ export function SeccaoPerguntasFrequentes() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-16 items-start">
         {/* COLUNA ESQUERDA: CABEÇALHO INSTITUCIONAL & CARTÃO DE APOIO DIRETO */}
         <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
-          <div className="space-y-3.5">
-            <div className="flex items-center gap-2.5">
-              <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-              <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
-                DÚVIDAS FREQUENTES
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-              Perguntas frequentes sobre o nosso{" "}
-              <span className="text-[#FF2D75]">acompanhamento</span>
-            </h2>
-            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-              Reunimos as respostas para as principais dúvidas dos pais antes de iniciarem as explicações com a TM-Educa.
-            </p>
-          </div>
-
-          {/* CARTÃO LATERAL DE CONTACTO DIRETO COM BORDAS 5PX */}
-          <div className="p-6 rounded-[5px] bg-slate-50 dark:bg-[#0A192F]/70 border border-slate-200/90 dark:border-slate-800 space-y-4 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-[5px] bg-[#FFF1F5] dark:bg-[#FF2D75]/15 text-[#FF2D75] flex items-center justify-center shrink-0">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
-                  Ainda tem alguma dúvida?
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">
-                  Fale diretamente com a nossa equipa pedagógica.
+          <RevelarAoRolar animacao="fade-right" duracaoMs={700}>
+            <div className="space-y-6">
+              <div className="space-y-3.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+                  <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
+                    DÚVIDAS FREQUENTES
+                  </span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+                  Perguntas frequentes sobre o nosso{" "}
+                  <span className="text-[#FF2D75]">acompanhamento</span>
+                </h2>
+                <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                  Reunimos as respostas para as principais dúvidas dos pais antes de iniciarem as explicações com a TM-Educa.
                 </p>
               </div>
-            </div>
 
-            <div className="pt-1 flex flex-col sm:flex-row lg:flex-col gap-2.5">
-              <Link
-                href="/portal-encarregado/pedidos/novo"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white text-xs sm:text-sm font-normal transition-colors shadow-xs group"
-              >
-                <span>Solicitar explicador</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/contactos"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[5px] bg-white dark:bg-[#102A45] hover:bg-slate-100 dark:hover:bg-[#17385c] text-[#0A192F] dark:text-white text-xs sm:text-sm font-normal border border-slate-200 dark:border-slate-700 transition-colors"
-              >
-                <span>Falar com orientador</span>
-              </Link>
+              {/* CARTÃO LATERAL DE CONTACTO DIRETO COM BORDAS 5PX E ELEVAÇÃO */}
+              <div className="p-6 rounded-[8px] bg-slate-50 dark:bg-[#0A192F]/70 border border-slate-200/90 dark:border-slate-800 space-y-4 shadow-xs card-hover-lift hover:border-[#FF2D75]/40">
+                <div className="flex items-center gap-3">
+                  <MessageCircle className="w-5 h-5 text-[#FF2D75] shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
+                      Ainda tem alguma dúvida?
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">
+                      Fale diretamente com a nossa equipa pedagógica.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-1 flex flex-col sm:flex-row lg:flex-col gap-2.5">
+                  <Link
+                    href="/portal-encarregado/pedidos/novo"
+                    className="shimmer-ativo inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white text-xs sm:text-sm font-normal transition-all shadow-xs group hover:-translate-y-0.5"
+                  >
+                    <span>Solicitar explicador</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    href="/contactos"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[5px] bg-white dark:bg-[#102A45] hover:bg-slate-100 dark:hover:bg-[#17385c] text-[#0A192F] dark:text-white text-xs sm:text-sm font-normal border border-slate-200 dark:border-slate-700 transition-colors"
+                  >
+                    <span>Falar com orientador</span>
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
+          </RevelarAoRolar>
         </div>
 
         {/* COLUNA DIREITA: ACORDEÃO FLUIDO E MODERNO */}
         <div className="lg:col-span-7 space-y-3">
-          {faqs.map((item, idx) => {
-            const estaAberto = aberto === idx;
+          <RevelarAoRolar animacao="fade-left" duracaoMs={750} atrasoMs={120}>
+            <div className="space-y-3">
+              {faqs.map((item, idx) => {
+                const estaAberto = aberto === idx;
 
-            return (
-              <div
-                key={idx}
-                className={`rounded-[5px] border transition-all duration-300 overflow-hidden ${
-                  estaAberto
-                    ? "bg-white dark:bg-[#0A192F] border-[#FF2D75]/40 shadow-sm"
-                    : "bg-white/80 dark:bg-[#0A192F]/50 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
-                }`}
-              >
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-[8px] border transition-all duration-300 overflow-hidden ${
+                      estaAberto
+                        ? "bg-white dark:bg-[#0A192F] border-[#FF2D75]/40 shadow-md"
+                        : "bg-white/80 dark:bg-[#0A192F]/50 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:translate-x-1"
+                    }`}
+                  >
                 <button
                   type="button"
                   onClick={() => alternar(idx)}
@@ -168,6 +173,8 @@ export function SeccaoPerguntasFrequentes() {
               </div>
             );
           })}
+            </div>
+          </RevelarAoRolar>
         </div>
       </div>
     </section>

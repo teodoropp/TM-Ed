@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 import {
   Phone,
   Mail,
@@ -40,42 +41,44 @@ export function SeccaoCtaFinal() {
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         {/* CABEÇALHO DIRETO NA SECÇÃO (SEM CARD) */}
-        <div className="max-w-3xl space-y-3.5">
-          <div className="flex items-center gap-2.5">
-            <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-            <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
-              CONTACTO DIRETO
-            </span>
+        <RevelarAoRolar animacao="fade-up" duracaoMs={700}>
+          <div className="max-w-3xl space-y-3.5">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+              <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
+                CONTACTO DIRETO
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+              Fale connosco e encontre o{" "}
+              <span className="text-[#FF2D75]">apoio certo</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+              A nossa equipa pedagógica está disponível para esclarecer dúvidas, avaliar as necessidades escolares do seu filho e apresentar o explicador ideal.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-            Fale connosco e encontre o{" "}
-            <span className="text-[#FF2D75]">apoio certo</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
-            A nossa equipa pedagógica está disponível para esclarecer dúvidas, avaliar as necessidades escolares do seu filho e apresentar o explicador ideal.
-          </p>
-        </div>
+        </RevelarAoRolar>
 
         {/* GRELHA PRINCIPAL DIRETA NA SECÇÃO */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* COLUNA ESQUERDA: CANAIS DIRETOS DE ATENDIMENTO */}
           <div className="lg:col-span-5 space-y-8">
-            <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-normal text-[#0A192F] dark:text-white">
-                Canais Diretos de Atendimento
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                Escolha o meio mais conveniente para falar com a nossa coordenação pedagógica.
-              </p>
-            </div>
+            <RevelarAoRolar animacao="fade-right" duracaoMs={750}>
+              <div className="space-y-8">
+                <div className="space-y-2">
+                  <h3 className="text-xl sm:text-2xl font-normal text-[#0A192F] dark:text-white">
+                    Canais Diretos de Atendimento
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                    Escolha o meio mais conveniente para falar com a nossa coordenação pedagógica.
+                  </p>
+                </div>
 
             {/* LISTA DE CONTACTOS DIRETOS */}
             <div className="space-y-5 divide-y divide-slate-100 dark:divide-slate-800">
               {/* Telefone & WhatsApp */}
-              <div className="flex items-start gap-4 pt-4 first:pt-0">
-                <div className="w-10 h-10 rounded-[5px] bg-[#FFF1F5] dark:bg-[#FF2D75]/15 text-[#FF2D75] flex items-center justify-center shrink-0 mt-0.5">
-                  <Phone className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3.5 pt-4 first:pt-0">
+                <Phone className="w-5 h-5 text-[#FF2D75] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
                     Telefone & WhatsApp
@@ -105,10 +108,8 @@ export function SeccaoCtaFinal() {
               </div>
 
               {/* Correio Eletrónico */}
-              <div className="flex items-start gap-4 pt-5">
-                <div className="w-10 h-10 rounded-[5px] bg-[#FFF1F5] dark:bg-[#FF2D75]/15 text-[#FF2D75] flex items-center justify-center shrink-0 mt-0.5">
-                  <Mail className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3.5 pt-5">
+                <Mail className="w-5 h-5 text-[#FF2D75] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
                     Correio Eletrónico
@@ -128,10 +129,8 @@ export function SeccaoCtaFinal() {
               </div>
 
               {/* Horário */}
-              <div className="flex items-start gap-4 pt-5">
-                <div className="w-10 h-10 rounded-[5px] bg-[#FFF1F5] dark:bg-[#FF2D75]/15 text-[#FF2D75] flex items-center justify-center shrink-0 mt-0.5">
-                  <Clock className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3.5 pt-5">
+                <Clock className="w-5 h-5 text-[#FF2D75] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
                     Horário de Atendimento
@@ -146,10 +145,8 @@ export function SeccaoCtaFinal() {
               </div>
 
               {/* Cobertura Geográfica */}
-              <div className="flex items-start gap-4 pt-5">
-                <div className="w-10 h-10 rounded-[5px] bg-[#FFF1F5] dark:bg-[#FF2D75]/15 text-[#FF2D75] flex items-center justify-center shrink-0 mt-0.5">
-                  <MapPin className="w-5 h-5" />
-                </div>
+              <div className="flex items-start gap-3.5 pt-5">
+                <MapPin className="w-5 h-5 text-[#FF2D75] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#0A192F] dark:text-white">
                     Cobertura Geográfica
@@ -172,9 +169,13 @@ export function SeccaoCtaFinal() {
               </p>
             </div>
           </div>
+        </RevelarAoRolar>
+      </div>
 
-          {/* COLUNA DIREITA: FORMULÁRIO SIMPLES E FÁCIL DE ENTENDER */}
-          <div className="lg:col-span-7 space-y-6">
+      {/* COLUNA DIREITA: FORMULÁRIO SIMPLES E FÁCIL DE ENTENDER */}
+      <div className="lg:col-span-7 space-y-6">
+        <RevelarAoRolar animacao="fade-left" duracaoMs={750} atrasoMs={150}>
+          <div className="space-y-6">
             <div className="space-y-2">
               <h3 className="text-xl sm:text-2xl font-normal text-[#0A192F] dark:text-white">
                 Envie uma Mensagem à Coordenação
@@ -281,18 +282,20 @@ export function SeccaoCtaFinal() {
                   />
                 </div>
 
-                {/* Botão de Envio com Bordas de 5px */}
+                {/* Botão de Envio com Efeito Shimmer e Elevação */}
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white text-sm sm:text-base font-normal transition-colors shadow-sm cursor-pointer"
+                  className="w-full shimmer-ativo inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white text-sm sm:text-base font-normal transition-all duration-300 hover:shadow-xl hover:shadow-[#FF2D75]/25 hover:-translate-y-0.5 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Enviar Mensagem à Coordenação</span>
                 </button>
               </form>
             )}
-          </div>
+            </div>
+          </RevelarAoRolar>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -21,6 +21,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { SimuladorPrecos } from "@/componentes/precos/simulador-precos";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 
 interface SlideBannerInformativo {
   id: string;
@@ -341,18 +342,20 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
       {/* =========================================================================
           CABEÇALHO DA SECÇÃO: Título e Subtítulo Solicitados
          ========================================================================= */}
-      <div className="max-w-3xl mb-12 sm:mb-16 md:mb-20 space-y-3">
-        <div className="flex items-center gap-2.5">
-          <span className="w-6 sm:w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-          <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-normal">
-            SERVIÇOS EDUCATIVOS
-          </span>
+      <RevelarAoRolar animacao="fade-up" duracaoMs={700}>
+        <div className="max-w-3xl mb-12 sm:mb-16 md:mb-20 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-6 sm:w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+            <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-normal">
+              SERVIÇOS EDUCATIVOS
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+            Soluções educativas para{" "}
+            <span className="text-[#FF2D75]">cada necessidade.</span>
+          </h2>
         </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-          Soluções educativas para{" "}
-          <span className="text-[#FF2D75]">cada necessidade.</span>
-        </h2>
-      </div>
+      </RevelarAoRolar>
 
       {/* =========================================================================
           LINHAS ZIG-ZAG ALTERNADAS (FEATURE LIST AS ALTERNATING ZIGZAG ROWS)
@@ -365,14 +368,18 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
           const inverterLados = index % 2 === 1;
 
           return (
-            <div
+            <RevelarAoRolar
               key={servico.id}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center">
-              {/* LADO DO TEXTO */}
+              animacao={inverterLados ? "fade-left" : "fade-right"}
+              duracaoMs={800}
+            >
               <div
-                className={`lg:col-span-6 space-y-5 sm:space-y-6 ${
-                  inverterLados ? "lg:order-2" : "lg:order-1"
-                }`}>
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center">
+                {/* LADO DO TEXTO */}
+                <div
+                  className={`lg:col-span-6 space-y-5 sm:space-y-6 ${
+                    inverterLados ? "lg:order-2" : "lg:order-1"
+                  }`}>
                 {/* Título & Subtítulo */}
                 <div className="space-y-2">
                   <h3 className="text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-tight">
@@ -449,6 +456,7 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
                 </div>
               </div>
             </div>
+          </RevelarAoRolar>
           );
         })}
       </div>
@@ -473,19 +481,19 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
           </p>
         </div>
 
-        {/* Cards Alinhados e Compactos com rounded-[5px] */}
+        {/* Cards Alinhados e Compactos com rounded-[5px] e animação tridimensional */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
           {/* Modalidade 1: Apoio ao Domicílio */}
-          <div className="p-5 sm:p-6 rounded-[5px] bg-slate-50/70 dark:bg-[#0A192F]/60 border border-slate-200/80 dark:border-slate-800/80 hover:border-[#FF2D75]/40 hover:bg-white dark:hover:bg-[#0A192F] transition-all duration-200 flex flex-col justify-between group shadow-sm">
+          <div className="p-5 sm:p-6 rounded-[8px] bg-slate-50/70 dark:bg-[#0A192F]/60 border border-slate-200/80 dark:border-slate-800/80 card-hover-lift hover:border-[#FF2D75]/50 hover:bg-white dark:hover:bg-[#0A192F] transition-all duration-300 flex flex-col justify-between group shadow-sm">
             <div className="space-y-3.5">
               <div className="flex items-center justify-between">
-                <div className="w-9 h-9 text-[#FF2D75] flex items-center justify-center">
-                  <Home className="w-4 h-4" />
+                <div className="w-9 h-9 text-[#FF2D75] flex items-center justify-center transition-transform group-hover:scale-110">
+                  <Home className="w-5 h-5" />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-base sm:text-lg font-normal text-[#0A192F] dark:text-white">
+                <h4 className="text-base sm:text-lg font-normal text-[#0A192F] dark:text-white group-hover:text-[#FF2D75] transition-colors">
                   Apoio ao Domicílio
                 </h4>
                 <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed font-normal">
@@ -518,7 +526,7 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
             <div className="pt-3.5 mt-3.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between">
               <Link
                 href="/portal-encarregado/pedidos/novo"
-                className="text-xs font-medium text-[#FF2D75] hover:text-[#E11D48] flex items-center gap-1 transition-colors group-hover:translate-x-0.5">
+                className="text-xs font-medium text-[#FF2D75] hover:text-[#E11D48] flex items-center gap-1 transition-colors group-hover:translate-x-1">
                 <span>Solicitar explicador ao domicílio</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -526,42 +534,39 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
           </div>
 
           {/* Modalidade 2: Aulas Online Interativas */}
-          <div className="p-5 sm:p-6 rounded-[5px] bg-slate-50/70 dark:bg-[#0A192F]/60 border border-slate-200/80 dark:border-slate-800/80 hover:border-[#FF2D75]/40 hover:bg-white dark:hover:bg-[#0A192F] transition-all duration-200 flex flex-col justify-between group shadow-sm">
+          <div className="p-5 sm:p-6 rounded-[8px] bg-slate-50/70 dark:bg-[#0A192F]/60 border border-slate-200/80 dark:border-slate-800/80 card-hover-lift hover:border-[#FF2D75]/50 hover:bg-white dark:hover:bg-[#0A192F] transition-all duration-300 flex flex-col justify-between group shadow-sm">
             <div className="space-y-3.5">
               <div className="flex items-center justify-between">
-                <div className="w-9 h-9 text-[#0A192F] dark:text-white flex items-center justify-center">
-                  <Laptop className="w-4 h-4 text-[#FF2D75]" />
+                <div className="w-9 h-9 text-[#FF2D75] flex items-center justify-center transition-transform group-hover:scale-110">
+                  <Laptop className="w-5 h-5" />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-base sm:text-lg font-normal text-[#0A192F] dark:text-white">
+                <h4 className="text-base sm:text-lg font-normal text-[#0A192F] dark:text-white group-hover:text-[#FF2D75] transition-colors">
                   Aulas Online Interativas
                 </h4>
                 <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed font-normal">
-                  Sessões em direto com quadro digital interativo, partilha de
-                  apontamentos e gravação das explicações para revisão a
-                  qualquer hora.
+                  Sessões virtuais dinâmicas com quadro digital interactivo,
+                  partilha de ecrã e gravação das explicações para revisão antes
+                  dos testes.
                 </p>
               </div>
 
               <div className="space-y-2 pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-700 dark:text-slate-200 font-normal">
-                    Quadro digital em direto e resolução partilhada de
-                    exercícios
+                    Acesso a explicadores de topo independentemente da sua localização
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-700 dark:text-slate-200 font-normal">
-                    Aulas gravadas para rever antes dos testes sumativos e
-                    exames
+                    Quadro interativo e ferramentas digitais de aprendizagem ativa
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-700 dark:text-slate-200 font-normal">
-                    Acesso aos explicadores mais qualificados em qualquer região
-                    do país
+                    Gravação e sumários imediatos das aulas disponíveis no portal
                   </span>
                 </div>
               </div>
@@ -570,8 +575,8 @@ export function SeccaoSolucoes({ dadosAnos = [] }: SeccaoSolucoesProps) {
             <div className="pt-3.5 mt-3.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between">
               <Link
                 href="/portal-encarregado/pedidos/novo"
-                className="text-xs font-medium text-[#FF2D75] hover:text-[#E11D48] flex items-center gap-1 transition-colors group-hover:translate-x-0.5">
-                <span>Solicitar aulas online interativas</span>
+                className="text-xs font-medium text-[#FF2D75] hover:text-[#E11D48] flex items-center gap-1 transition-colors group-hover:translate-x-1">
+                <span>Solicitar explicações online</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

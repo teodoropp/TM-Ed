@@ -194,6 +194,101 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   animation: float 5s ease-in-out infinite;
 }
 
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(-1deg);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 6s ease-in-out infinite;
+}
+
+/* Efeito Ken Burns dinâmico para imagens ativas do Hero */
+@keyframes kenBurnsSlow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurnsSlow 10s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Linha ondulada com traço fluído animado (Metodologia) */
+@keyframes dashWave {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+.animate-dash-flow {
+  stroke-dasharray: 8 8;
+  animation: dashWave 3s linear infinite;
+}
+
+/* Brilho varredor (Shimmer) de alta conversão para botões e crachás */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-150%);
+  }
+  50%, 100% {
+    transform: translateX(250%);
+  }
+}
+
+.shimmer-ativo {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-ativo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: translateX(-150%);
+  animation: shimmerSweep 3.5s infinite;
+  pointer-events: none;
+}
+
+/* Elevação tridimensional fluida para cartões e grelhas */
+.card-hover-lift {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 35px -10px rgba(10, 25, 47, 0.12), 0 0 25px 0 rgba(255, 45, 117, 0.15);
+}
+
+.dark .card-hover-lift:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px 0 rgba(255, 45, 117, 0.25);
+}
+
 @keyframes pulseGlowPink {
   0%, 100% {
     box-shadow: 0 0 15px rgba(255, 45, 117, 0.2);

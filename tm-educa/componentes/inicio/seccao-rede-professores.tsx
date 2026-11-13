@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { RevelarAoRolar } from "@/componentes/animacao/revelar-ao-rolar";
 
 /**
  * Secção 5: A nossa rede de explicadores / Corpo de Explicadores Selecionado
@@ -148,75 +149,78 @@ export function SeccaoRedeProfessores() {
       }}
     >
       {/* CABEÇALHO DA SECÇÃO */}
-      <div className="max-w-3xl mb-10 sm:mb-14 space-y-3">
-        <div className="flex items-center gap-2.5">
-          <span className="w-6 sm:w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
-          <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
-            CORPO DE EXPLICADORES SELECIONADO
-          </span>
+      <RevelarAoRolar animacao="fade-up" duracaoMs={700}>
+        <div className="max-w-3xl mb-10 sm:mb-14 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-6 sm:w-8 h-[2px] bg-[#FF2D75] rounded-full animate-pulse" />
+            <span className="text-xs uppercase tracking-wider text-[#FF2D75] font-semibold">
+              CORPO DE EXPLICADORES SELECIONADO
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
+            A nossa rede de explicadores{" "}
+            <span className="text-[#FF2D75]">auditados e credenciados</span>
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-normal">
+            Apenas 1 em cada 5 explicadores é aprovado no nosso processo seletivo. Garantimos profissionais
+            idóneos, dedicados e com metodologia comprovada para o sucesso escolar do seu filho.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-[35px] font-normal text-[#0A192F] dark:text-white tracking-normal leading-[1.15]">
-          A nossa rede de explicadores{" "}
-          <span className="text-[#FF2D75]">auditados e credenciados</span>
-        </h2>
-        <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-normal">
-          Apenas 1 em cada 5 explicadores é aprovado no nosso processo seletivo. Garantimos profissionais
-          idóneos, dedicados e com metodologia comprovada para o sucesso escolar do seu filho.
-        </p>
-      </div>
+      </RevelarAoRolar>
 
       {/* SECÇÃO DO CARROSSEL DE EXPLICADORES */}
-      <div
-        className="space-y-6"
-        onMouseEnter={() => setEmPausa(true)}
-        onMouseLeave={() => setEmPausa(false)}
-      >
-        {/* BARRA DE NAVEGAÇÃO DO CARROSSEL */}
-        <div className="flex items-center justify-between gap-4">
-          <Link
-            href="/professores/candidatura"
-            className="inline-flex text-xs sm:text-sm font-medium text-[#FF2D75] hover:text-[#E11D48] items-center gap-1.5 transition-colors"
-          >
-            <span>É explicador? Candidate-se à rede</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-
-          {/* CONTROLOS DE NAVEGAÇÃO DO CARROSSEL */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={slideAnterior}
-              aria-label="Explicador anterior"
-              className="w-9 h-9 rounded-[5px] bg-white dark:bg-[#0A192F] border border-slate-200 dark:border-slate-800 hover:border-[#FF2D75] hover:text-[#FF2D75] text-[#0A192F] dark:text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
+      <RevelarAoRolar animacao="fade-up" atrasoMs={150} duracaoMs={750}>
+        <div
+          className="space-y-6"
+          onMouseEnter={() => setEmPausa(true)}
+          onMouseLeave={() => setEmPausa(false)}
+        >
+          {/* BARRA DE NAVEGAÇÃO DO CARROSSEL */}
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href="/professores/candidatura"
+              className="inline-flex text-xs sm:text-sm font-medium text-[#FF2D75] hover:text-[#E11D48] items-center gap-1.5 transition-colors"
             >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={proximoSlide}
-              aria-label="Próximo explicador"
-              className="w-9 h-9 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+              <span>É explicador? Candidate-se à rede</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
 
-        {/* CONTENTOR DESLIZANTE DO CARROSSEL */}
-        <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-out -mx-2.5"
-            style={{
-              transform: `translateX(-${indiceAtivo * (100 / itensVisiveis)}%)`,
-            }}
-          >
-            {professoresExemplo.map((prof) => (
-              <div
-                key={prof.id}
-                className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2.5"
+            {/* CONTROLOS DE NAVEGAÇÃO DO CARROSSEL */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={slideAnterior}
+                aria-label="Explicador anterior"
+                className="w-9 h-9 rounded-[5px] bg-white dark:bg-[#0A192F] border border-slate-200 dark:border-slate-800 hover:border-[#FF2D75] hover:text-[#FF2D75] text-[#0A192F] dark:text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
               >
-                <div className="h-full p-5 sm:p-6 rounded-[5px] bg-white dark:bg-[#0A192F] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-[#FF2D75]/40 transition-all duration-200 flex flex-col justify-between group">
-                  <div className="space-y-4">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={proximoSlide}
+                aria-label="Próximo explicador"
+                className="w-9 h-9 rounded-[5px] bg-[#0A192F] hover:bg-[#FF2D75] text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* CONTENTOR DESLIZANTE DO CARROSSEL */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-out -mx-2.5"
+              style={{
+                transform: `translateX(-${indiceAtivo * (100 / itensVisiveis)}%)`,
+              }}
+            >
+              {professoresExemplo.map((prof) => (
+                <div
+                  key={prof.id}
+                  className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2.5"
+                >
+                  <div className="h-full p-5 sm:p-6 rounded-[8px] bg-white dark:bg-[#0A192F] border border-slate-200/90 dark:border-slate-800 shadow-sm card-hover-lift hover:border-[#FF2D75]/50 flex flex-col justify-between group">
+                    <div className="space-y-4">
                     {/* CABEÇALHO DO PERFIL */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -280,23 +284,24 @@ export function SeccaoRedeProfessores() {
           </div>
         </div>
 
-        {/* INDICADORES / PONTOS DE NAVEGAÇÃO DO CARROSSEL */}
-        <div className="flex items-center justify-center gap-1.5 pt-2">
-          {Array.from({ length: maxIndice + 1 }).map((_, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => setIndiceAtivo(idx)}
-              aria-label={`Ir para a página ${idx + 1} de explicadores`}
-              className={`transition-all duration-300 rounded-[5px] h-1.5 cursor-pointer ${
-                idx === indiceAtivo
-                  ? "w-7 bg-[#FF2D75]"
-                  : "w-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600"
-              }`}
-            />
-          ))}
+          {/* INDICADORES / PONTOS DE NAVEGAÇÃO DO CARROSSEL */}
+          <div className="flex items-center justify-center gap-1.5 pt-2">
+            {Array.from({ length: maxIndice + 1 }).map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setIndiceAtivo(idx)}
+                aria-label={`Ir para a página ${idx + 1} de explicadores`}
+                className={`transition-all duration-300 rounded-[5px] h-1.5 cursor-pointer ${
+                  idx === indiceAtivo
+                    ? "w-7 bg-[#FF2D75]"
+                    : "w-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600"
+                }`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </RevelarAoRolar>
     </section>
   );
 }

@@ -27,12 +27,12 @@ export function ControlosHero({
 }: PropsControlosHero) {
   return (
     <>
-      {/* Seta Lateral Esquerda (Borda da Tela) */}
+      {/* Seta Lateral Esquerda (Borda da Tela - Oculta em telemóveis para não obstruir o conteúdo, onde há suporte a Swipe táctil) */}
       <button
         type="button"
         onClick={aoRetroceder}
         aria-label="Slide anterior"
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+        className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md shadow-2xl items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
       >
         <ChevronLeft className="w-6 h-6 text-white" />
       </button>
@@ -42,7 +42,7 @@ export function ControlosHero({
         type="button"
         onClick={aoAvancar}
         aria-label="Próximo slide"
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+        className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md shadow-2xl items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
       >
         <ChevronRight className="w-6 h-6 text-white" />
       </button>

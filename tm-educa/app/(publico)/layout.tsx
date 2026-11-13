@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { CabecalhoBase } from "@/componentes/layout/cabecalho-base";
 import { RodapeBase } from "@/componentes/layout/rodape-base";
+import { BotaoFlutuanteWhatsapp } from "@/componentes/inicio/botao-flutuante-whatsapp";
 
 /**
  * Layout do site público da TM-Educa.
@@ -28,6 +29,8 @@ export default function LayoutPublico({ children }: { children: React.ReactNode 
       <main className="flex-1">{children}</main>
 
       <RodapeBase />
+
+      <BotaoFlutuanteWhatsapp />
     </>
   );
 }

@@ -68,12 +68,15 @@ export function GrelhaAgendaAulas({
           const fim = new Date(aula.dataHoraFim);
           const hoje = new Date();
           const ePassada = fim < hoje;
+          const eNaoDada = ePassada && aula.estado === "Agendada";
 
           return (
             <Cartao
               key={aula.id}
               className={`border transition-all ${
-                ePassada
+                eNaoDada
+                  ? "bg-rose-50/20 dark:bg-rose-950/10 border-rose-200/80 dark:border-rose-900/40"
+                  : ePassada
                   ? "bg-slate-50/50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800"
                   : "bg-white dark:bg-slate-800 border-emerald-100 dark:border-emerald-950/60 hover:shadow-md"
               }`}
@@ -88,6 +91,8 @@ export function GrelhaAgendaAulas({
                     variante={
                       aula.estado === "Realizada"
                         ? "sucesso"
+                        : eNaoDada
+                        ? "perigo"
                         : aula.estado === "Cancelada"
                         ? "perigo"
                         : aula.estado === "Agendada"
@@ -96,7 +101,7 @@ export function GrelhaAgendaAulas({
                     }
                     className="text-xs"
                   >
-                    {aula.estado}
+                    {eNaoDada ? "Não Dada" : aula.estado}
                   </Badge>
                 </div>
 
@@ -140,12 +145,22 @@ export function GrelhaAgendaAulas({
                       Preencher Sumário / Presença &rarr;
                     </a>
                   ) : (
-                    <a
-                      href={`/portal-encarregado/aulas/${aula.id}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400"
-                    >
-                      Ver Ficha Pedagógica &rarr;
-                    </a>
+                    <div className="flex items-center gap-2">
+                      {eNaoDada && (
+                        <a
+                          href={`/portal-encarregado/aulas/${aula.id}`}
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800"
+                        >
+                          Confirmar Realizada &rarr;
+                        </a>
+                      )}
+                      <a
+                        href={`/portal-encarregado/aulas/${aula.id}`}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400"
+                      >
+                        Ver Detalhes &rarr;
+                      </a>
+                    </div>
                   )}
                 </div>
               </CartaoConteudo>

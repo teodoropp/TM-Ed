@@ -83,7 +83,7 @@ export const GRUPOS_NAVEGACAO_PROFESSOR: GrupoNavegacaoProfessor[] = [
     itens: [
       {
         rotulo: "Propostas de Alunos",
-        descricao: "Matching e novos alunos",
+        descricao: "Atribuição e novos alunos",
         href: "/portal-professor/propostas",
         icone: "propostas",
         contador: "propostas",
